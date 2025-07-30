@@ -35,3 +35,5 @@ Forum Site/
 - [ ] Build API endpoints
 - [ ] Set up React frontend
 - [ ] Connect frontend to backend
+
+#setting the server myself
