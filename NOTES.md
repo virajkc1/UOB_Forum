@@ -168,3 +168,14 @@ function greet(name: string): string; // overload #1
 function greet(name: string, age: number): string; // overload #2
 
 2 functions with the same name but can both be called differently
+
+Today all the Models are defined
+I worked on setting up the routes and controllers for Authentication
+Both Registering a User & Logging a user have been created
+
+Topics I learnt:
+Overloading
+TS Interface
+Hashed Passwords with Bcrypt
+JSON Web Token Generation
+How to define controllers
