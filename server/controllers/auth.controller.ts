@@ -34,6 +34,7 @@ export const registerUser = async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       university,
+      role,
     });
 
     await newUser.save();

@@ -2,15 +2,17 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoConnect from "./db";
 import authRoutes from "./routes/auth";
+import questionRoutes from "./routes/question";
 
 dotenv.config();
-
 const app = express();
 //Middleware added to parse the request body
 app.use(express.json());
 
 //Routes
 app.use("/api/auth", authRoutes);
+
+app.use("/question", questionRoutes);
 
 const PORT = process.env.PORT || 3000;
 
@@ -20,6 +22,7 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`);
+  console.log(`http://localhost:5000/`);
   mongoConnect();
 });
 

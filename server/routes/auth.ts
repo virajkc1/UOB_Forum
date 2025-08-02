@@ -1,6 +1,11 @@
 //Importing the Router here
-import { Router } from "express";
+import { Router, Request } from "express";
 import { registerUser, loginUser } from "../controllers/auth.controller";
+import { authMiddleware } from "../middleware/auth.middleware";
+
+interface AuthRequest extends Request {
+  user?: any;
+} //if user exists, it will be added to the request object
 
 //Defining my routes
 
@@ -16,4 +21,10 @@ const router = Router();
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 
+router.get("/profile", authMiddleware, (req: AuthRequest, res) => {
+  return res.json({
+    message: "Successful transmittion",
+    user: req.user,
+  });
+});
 export default router;
