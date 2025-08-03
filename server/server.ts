@@ -1,8 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoConnect from "./db";
-import authRoutes from "./routes/auth";
-import questionRoutes from "./routes/question";
+import authRoutes from "./routes/auth.route";
+import questionRoutes from "./routes/question.route";
+import answerRoutes from "./routes/answer.route";
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 
 app.use("/question", questionRoutes);
+
+app.use("/answer", answerRoutes);
 
 const PORT = process.env.PORT || 3000;
 

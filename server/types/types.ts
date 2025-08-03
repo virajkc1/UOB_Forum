@@ -6,14 +6,3 @@ export interface AuthRequest extends Request {
 }
 
 // You can add more shared types here as needed
-export interface CreateQuestionBody {
-  title: string;
-  content: string;
-  tags?: string[];
-}
-
-export interface UpdateQuestionBody {
-  title?: string;
-  content?: string;
-  tags?: string[];
-}

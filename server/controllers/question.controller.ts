@@ -1,6 +1,6 @@
-import Question from "../models/Question";
+import Question from "../models/Question.Model";
 import { Response } from "express";
-import { AuthRequest } from "../types";
+import { AuthRequest } from "../types/types";
 
 //Create a question
 export const createQuestion = async (req: AuthRequest, res: Response) => {
@@ -60,5 +60,67 @@ export const getAllQuestions = async (req: AuthRequest, res: Response) => {
     return res.status(200).json(allQuestions);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const deleteQuestion = async (req: AuthRequest, res: Response) => {
+  try {
+    //To delete a question
+    // You must have made the question
+    //You must know the question id
+    // You must find the question to check if it can be deleted
+    const questionId = req.params.id;
+    const question = await Question.findById(questionId);
+    if (!question) {
+      return res.status(404).json({ message: "No Question Found" });
+    }
+    //we now have the question here
+    //check that the user id is same as question author
+    const userId = req.user?.id;
+    if (userId !== question.author) {
+      return res.status(401).json({ message: "User not the same as author" });
+    }
+    //Now we know its the same user & question exists so delete it
+    await Question.findByIdAndDelete(questionId);
+    return res
+      .status(201)
+      .json({ message: "Succesfully deleted the Question" });
+    //Once you know this - delete from the database
+  } catch (error) {
+    console.error(`Deleted Question Error: ${error}`);
+    res.status(500).json({ message: " DeleteQuestion error" });
+  }
+};
+
+export const updateQuestion = async (req: AuthRequest, res: Response) => {
+  try {
+    //check question exists
+    const questionId = req.params.id;
+
+    const question = await Question.findById(questionId);
+    if (!question) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+    //AUTHOR ONLY CAN UPDATE IT
+    const userId = req.user?.id;
+    if (userId !== question.author.toString()) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorised User Updating Question" });
+    }
+    //Update Question - Title, Content, Tags
+    const { title, content, tags } = req.body;
+    if (title) {
+      question.title = title;
+    }
+    if (content) {
+      question.content = content;
+    }
+    if (tags) {
+      question.tags = tags;
+    }
+  } catch (error) {
+    console.error(`Update Question Error: ${error}`);
+    res.status(401).json({ message: "Error at Update Error" });
   }
 };

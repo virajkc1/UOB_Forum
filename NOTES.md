@@ -122,9 +122,9 @@ Basic Structure of a Model
 
 How to connect models to database
 
-===========================================================================
+========================================================================
 DAY 3
-===========================================================================
+========================================================================
 I have created all the Models and i removed isAccepted field from Answer Model, i dont think it is needed
 
 Next steps: User Authentication System
@@ -179,3 +179,59 @@ TS Interface
 Hashed Passwords with Bcrypt
 JSON Web Token Generation
 How to define controllers
+
+========================================================================
+DAY 4
+========================================================================
+Tasks for Today
+
+1. Build authentication middleware - Protect routes
+2. Test the complete auth system - Register, login, and protected routes
+3. Build Question/Answer features - With proper authentication in place
+
+Task 1
+Extract JWT from request headers
+Verify the token is valid with the JWT_Secret
+Find the User in the database
+Add user info the req object
+Allow or deny access to protected routes
+
+TypeScript Notes
+Interface - just a schema for the different types
+
+HTTP REQUESTS LESSON
+Requests contain:
+Headers (JWT)
+Bodt (Data being sent)
+URL Parameters
+Query Strings
+
+Request does not know who the user is - just has a token representing the user
+
+Task 2
+Test our Auth System
+
+ALL TESTS COMPLETED WITH POSTMAN
+✅ Registration works
+✅ Login works
+✅ Protected routes work
+✅ Middleware protects routes
+
+Controllers to set up for questions
+Create a Question - auth X
+Delete a Question - auth and ownership X
+Update a Question - auth and ownership X
+Get all Questions - auth X
+Get a Question - auth X
+
+========================================================================
+DAY 5
+========================================================================
+I have now built all the question endpoints
+
+I need to build the answer endpoints
+
+1. Create an answer
+2. Delete an answer
+3. Get All answers from a user
+4. Get answers for a question

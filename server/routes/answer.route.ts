@@ -1,9 +1,10 @@
+//This is for your
 import { Router } from "express";
-//for questions you need to authenticate its a real user
+import { createAnswer } from "../controllers/answer.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router();
 
-router.post("/", authMiddleware);
+router.use("/", authMiddleware, createAnswer);
 
 export default router;

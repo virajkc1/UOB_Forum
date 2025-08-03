@@ -1,13 +1,10 @@
 import dotenv from "dotenv";
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/User";
+import User from "../models/User.Model";
+import { AuthRequest } from "../types/types";
 
 dotenv.config(); //configures environment variables
-
-interface AuthRequest extends Request {
-  user?: any;
-} //if user exists, it will be added to the request object
 
 //Steps
 export const authMiddleware = async (
