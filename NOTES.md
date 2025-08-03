@@ -235,3 +235,7 @@ I need to build the answer endpoints
 2. Delete an answer
 3. Get All answers from a user
 4. Get answers for a question
+
+URL Parameters vs Request Body
+.params - this gets data from the URL Path
+.body - gets data from the req body (JSON)
