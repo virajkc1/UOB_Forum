@@ -158,6 +158,7 @@ export const updateAnswer = async (req: AuthRequest, res: Response) => {
       answer.content = content;
     }
     await answer.save();
+    res.status(200).json(answer);
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "updatAnswer controller error " });

@@ -76,7 +76,7 @@ export const deleteQuestion = async (req: AuthRequest, res: Response) => {
     }
     //we now have the question here
     //check that the user id is same as question author
-    const userId = req.user?.id;
+    const userId = req.user?._id;
     if (userId !== question.author) {
       return res.status(401).json({ message: "User not the same as author" });
     }
@@ -102,7 +102,7 @@ export const updateQuestion = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ message: "Question not found" });
     }
     //AUTHOR ONLY CAN UPDATE IT
-    const userId = req.user?.id;
+    const userId = req.user?._id;
     if (userId !== question.author.toString()) {
       return res
         .status(401)
@@ -119,6 +119,8 @@ export const updateQuestion = async (req: AuthRequest, res: Response) => {
     if (tags) {
       question.tags = tags;
     }
+    await question.save();
+    res.status(200).json(question);
   } catch (error) {
     console.error(`Update Question Error: ${error}`);
     res.status(401).json({ message: "Error at Update Error" });

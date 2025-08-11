@@ -239,3 +239,27 @@ I need to build the answer endpoints
 URL Parameters vs Request Body
 .params - this gets data from the URL Path
 .body - gets data from the req body (JSON)
+
+========================================================================
+DAY 6
+========================================================================
+
+The endpoints are all defined
+
+Now produce the route handling
+I have created the Route handling, i want to move to frontend design for abit now
+
+Starting with installing Vite - best for React with TS apps
+
+Packages installed:
+
+- tailwind Css
+- postcss
+- autoprefixer
+
+- axios - HTTP client lets you make API Requests
+- react-router-dom - Routing Library - for multiple routes
+- @types/react-router-dom - TS definitions for react-router
+
+- tailwindcss - CSS framework for styling
+- postcss - transform CSS with plugins (its the compiler for tailwindcss)
