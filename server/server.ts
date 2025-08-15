@@ -4,18 +4,20 @@ import mongoConnect from "./db";
 import authRoutes from "./routes/auth.route";
 import questionRoutes from "./routes/question.route";
 import answerRoutes from "./routes/answer.route";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
 //Middleware added to parse the request body
 app.use(express.json());
+app.use(cors());
 
 //Routes
 app.use("/api/auth", authRoutes);
 
-app.use("/question", questionRoutes);
+app.use("/api/question", questionRoutes);
 
-app.use("/answer", answerRoutes);
+app.use("/api/answer", answerRoutes);
 
 const PORT = process.env.PORT || 3000;
 

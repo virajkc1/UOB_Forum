@@ -47,7 +47,7 @@ export const deleteAnswer = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ message: "AnswerId Not Found" });
     }
     const answer = await Answer.findById(answerId);
-    if (answer?.author.toString() !== req.user?._id) {
+    if (answer?.author.toString() !== req.user?._id.toString()) {
       return res.status(403).json({ message: "Unauthorised User" });
     }
     const questionId = answer?.questionId;
@@ -64,7 +64,7 @@ export const deleteAnswer = async (req: AuthRequest, res: Response) => {
     await Answer.deleteOne({ _id: answerId });
     //Delete the answer from question array
     question.answers = question.answers.filter(
-      (id) => id.toString() !== answerId
+      (id) => id.toString() !== answerId.toString()
     );
     await question.save();
 
@@ -150,7 +150,7 @@ export const updateAnswer = async (req: AuthRequest, res: Response) => {
     //check the answer author is same as the user in AuthRequest
     const userId = req.user?._id;
     const { content } = req.body;
-    if (userId !== answer.author.toString()) {
+    if (userId.toString() !== answer.author.toString()) {
       return res.status(400).json({ message: "User not authorised" });
     }
     //user allowed to update the Answer as they are the author

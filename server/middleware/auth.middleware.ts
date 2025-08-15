@@ -21,6 +21,7 @@ export const authMiddleware = async (
 
     //Verify the token with JWT Secret
     //Checking if untampered with by checking the secret
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
       id: string;
     }; //just stores info and user ID about the user in JWT
@@ -31,6 +32,10 @@ export const authMiddleware = async (
 
     //NOW Check the user is a valid user
     //check in the database
+
+    if (!process.env.JWT_SECRET) {
+      return res.status(401).json({ message: "JWT_SECRET not found" });
+    }
 
     const user = await User.findById(decoded.id);
     if (!user) {

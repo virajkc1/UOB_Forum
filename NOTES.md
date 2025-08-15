@@ -263,3 +263,16 @@ Packages installed:
 
 - tailwindcss - CSS framework for styling
 - postcss - transform CSS with plugins (its the compiler for tailwindcss)
+
+======================================================
+Day 10
+======================================================
+
+- Get the wireframes sorted:
+  Login/Signup Page
+  Homepage
+  Forum Page
+
+Added CORS so frontend and backend requests can be handled
+
+API routes are for the backend
