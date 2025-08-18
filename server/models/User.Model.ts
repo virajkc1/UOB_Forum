@@ -11,7 +11,10 @@ const userSchema = new Schema(
       default: "student",
       required: false,
     },
-    university: { type: String, required: true },
+    year: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

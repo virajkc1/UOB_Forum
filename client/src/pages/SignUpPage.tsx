@@ -1,9 +1,60 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { EyeClosed, Eye } from "lucide-react";
+import type { ChangeEvent } from "react";
 
 const SignUpPage = () => {
+  //State for the form data
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    year: "",
+    role: "student",
+  });
+
+  //Ref for the re-type password field
+  const rePasswordRef = useRef<HTMLInputElement>(null);
+
+  //Function to handle the change in the form
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const validateEmail = (email: string) => {
+    if (!email) return "Email is required";
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return "Please enter a valid email address";
+    }
+    const validDomain = ["student.bham.ac.uk", "alumni.bham.ac.uk"];
+    const domain = email.split("@")[1];
+
+    if (validDomain.includes(domain)) {
+      return "Please enter a valid student email (student.bham.ac.uk or alumni.bham.ac.uk)";
+    }
+  };
+
+  //Function to handle the submission of the form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (rePasswordRef.current?.value !== formData.password) {
+      alert("Passwords do not match!");
+
+      setFormData({
+        ...formData,
+        password: "",
+      });
+
+      if (rePasswordRef.current) {
+        rePasswordRef.current.value = "";
+      }
+      return;
+    }
     console.log("Form Submitted");
   };
 
@@ -17,35 +68,39 @@ const SignUpPage = () => {
       </div>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign Up
+          Create an account
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Sign up to continue
-        </p>
       </div>
       {/* Defining the form */}
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-6 shadow-lg sm:rounded-lg ">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Name Field */}
+            {/* Full Name Field */}
             <div>
               <input
                 id="name"
                 name="name"
                 type="text"
+                onChange={handleChange}
+                value={formData.name}
                 required
-                value="name"
+                placeholder="Full Name"
                 className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
               />
             </div>
+
             {/* Email Field */}
             <div>
               <input
                 id="email"
                 name="email"
                 type="email"
+                onChange={handleChange}
+                value={formData.email}
+                pattern="^[a-zA-Z0-9._%+-]+@(student\.bham\.ac\.uk|alumni\.bham\.ac\.uk)$"
+                title="Please enter a valid student email"
                 required
-                value="email"
+                placeholder="Student Email"
                 className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -56,32 +111,70 @@ const SignUpPage = () => {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 required
-                value="password"
-                className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded"
+                placeholder="Password"
+                onChange={handleChange}
+                value={formData.password}
+                className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded-md"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+                className="absolute right-0 p-1 top-1/2 transform -translate-y-1/2 text-gray-600"
               >
                 {showPassword ? <Eye /> : <EyeClosed />}
               </button>
             </div>
-            {/* Role */}
-            <div>
+            {/* Re-type Password */}
+            <div className="relative w-full max-w-sm">
               <input
-                id="role"
-                name="role"
-                list="fruit-options"
+                id="re_password"
+                name="re_password"
+                type="password"
                 required
-                value="role"
-                className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                // value="re-type-password"
+                placeholder="Re-type password"
+                ref={rePasswordRef}
+                className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded"
               />
-              <datalist id="fruit-options">
-                <option value="Apple" />
-                <option value="Banana" />
-                <option value="Orange" />
-              </datalist>
+            </div>
+            {/* University Year */}
+            <div>
+              <select
+                id="year"
+                name="year"
+                required
+                onChange={handleChange}
+                value={formData.year}
+                className="block w-full px-3 py-2  rounded-md bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 placeholder-gray-400 border-b"
+              >
+                <option value="" disabled className="text-gray-400">
+                  Current Year
+                </option>
+                <option value="Foundation Year">Foundation Year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+                <option value="Alumni">Alumni</option>
+              </select>
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Sign up
+              </button>
+            </div>
+            {/* Sign In Link */}
+            <div className="mt-6 text-center">
+              <span className="text-black">Already have an account? </span>
+              <a
+                href="#"
+                className="font-medium text-blue-600 hover:text-blue-500"
+              >
+                Sign in
+              </a>
             </div>
           </form>
         </div>
