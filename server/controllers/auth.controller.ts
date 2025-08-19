@@ -10,11 +10,12 @@ export const registerUser = async (req: Request, res: Response) => {
   try {
     //CHECK ALL FIELDS PRESENT FOR THE SCHEMA
     //gain all the details from the request body that should be in the User Model
-    const { name, email, password, role, university } = req.body;
-    if (!name || !email || !password || !role || !university) {
+    console.log(req.body);
+    const { name, email, password, role, year } = req.body;
+    if (!name || !email || !password || !year) {
       return res.status(400).json({ message: "All fields must be entered" });
     }
-
+    const userRole = role || "student";
     //check the user exists - if so DONT REGISTER THEM, ACCOUNT ALREADY MADE
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
@@ -33,8 +34,8 @@ export const registerUser = async (req: Request, res: Response) => {
       name,
       email,
       password: hashedPassword,
-      university,
-      role,
+      year,
+      role: userRole,
     });
 
     await newUser.save();

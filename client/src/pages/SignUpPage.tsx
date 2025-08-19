@@ -4,6 +4,7 @@ import type { ChangeEvent } from "react";
 import myPhoto from "../assets/signup_left_image.png";
 
 const SignUpPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
   //State for the form data
   const [formData, setFormData] = useState({
     name: "",
@@ -11,6 +12,15 @@ const SignUpPage = () => {
     password: "",
     year: "",
     role: "student",
+  });
+
+  //error state for the form
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+    rePassword: "",
+    year: "",
   });
 
   //Ref for the re-type password field
@@ -24,6 +34,13 @@ const SignUpPage = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    // Clear error for the field being changed
+    if (errors[e.target.name as keyof typeof errors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [e.target.name]: "",
+      }));
+    }
   };
   const validateEmail = (email: string) => {
     if (!email) return "Email is required";
@@ -35,31 +52,96 @@ const SignUpPage = () => {
     const validDomain = ["student.bham.ac.uk", "alumni.bham.ac.uk"];
     const domain = email.split("@")[1];
 
-    if (validDomain.includes(domain)) {
-      return "Please enter a valid student email (student.bham.ac.uk or alumni.bham.ac.uk)";
+    if (!validDomain.includes(domain)) {
+      return "Please enter a valid UOB student or alumni email ";
     }
+
+    return "";
+  };
+  const validatePassword = (password: string) => {
+    // >= 8 chars, 1 upper, 1 lower, includes 1 special character
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&-])[A-Za-z\d@$!%*?&-]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      return "Password does not meet criteria";
+    }
+    return "";
+  };
+  const validateName = (name: string) => {
+    if (!name) {
+      return "Name is required";
+    }
+    const nameRegex = /^[A-Za-z\s-]+$/;
+    if (!nameRegex.test(name)) {
+      return "Name is invalid";
+    }
+    return "";
+    //
+  };
+  const validateYear = (year: string) => {
+    if (!year) {
+      return "Please select your current year";
+    }
+    return "";
   };
 
   //Function to handle the submission of the form
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (rePasswordRef.current?.value !== formData.password) {
-      alert("Passwords do not match!");
 
-      setFormData({
-        ...formData,
-        password: "",
-      });
+    //defining the new errors
 
-      if (rePasswordRef.current) {
-        rePasswordRef.current.value = "";
-      }
+    const newErrors = {
+      name: validateName(formData.name),
+      email: validateEmail(formData.email),
+      password: validatePassword(formData.password),
+      rePassword:
+        rePasswordRef.current?.value !== formData.password
+          ? "Password does not match"
+          : "",
+      year: validateYear(formData.year),
+    };
+    setErrors(newErrors);
+    // Typescript states that each field should be a string, but your values can be undefined, so we return "" after each successful validation just look at any validation function
+
+    //you want to set the newErrors to errors
+    const hasErrors = Object.values(newErrors).filter(Boolean).length > 0;
+    if (hasErrors) {
       return;
     }
-    console.log("Form Submitted");
+    //Here the form can be submitted
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message);
+        // Clear form on success
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          year: "",
+          role: "student",
+        });
+        if (rePasswordRef.current) {
+          rePasswordRef.current.value = "";
+        }
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert("Registration failed. Please try again.");
+      console.error("Registration error:", error);
+    }
   };
 
-  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="flex min-h-screen bg-white">
       {/* Left side image */}
@@ -94,10 +176,12 @@ const SignUpPage = () => {
                     type="text"
                     onChange={handleChange}
                     value={formData.name}
-                    required
                     placeholder="Full Name"
                     className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
                   />
+                  {errors.name && (
+                    <p className="text-red-500 mt-1 text-sm">{errors.name}</p>
+                  )}
                 </div>
 
                 {/* Email Field */}
@@ -110,10 +194,12 @@ const SignUpPage = () => {
                     value={formData.email}
                     pattern="^[a-zA-Z0-9._%+-]+@(student\.bham\.ac\.uk|alumni\.bham\.ac\.uk)$"
                     title="Please enter a valid student email"
-                    required
                     placeholder="Student Email"
                     className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
                   />
+                  {errors.email && (
+                    <p className="text-red-500 mt-1 text-sm">{errors.email}</p>
+                  )}
                 </div>
                 {/* Password */}
                 <div className="relative w-full max-w-sm">
@@ -121,12 +207,16 @@ const SignUpPage = () => {
                     id="password"
                     name="password"
                     type={showPassword ? "text" : "password"}
-                    required
                     placeholder="Password"
                     onChange={handleChange}
                     value={formData.password}
                     className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded-md"
                   />
+                  {errors.password && (
+                    <p className="text-red-500 mt-1 text-sm">
+                      {errors.password}
+                    </p>
+                  )}
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -141,19 +231,22 @@ const SignUpPage = () => {
                     id="re_password"
                     name="re_password"
                     type="password"
-                    required
-                    // value="re-type-password"
                     placeholder="Re-type password"
                     ref={rePasswordRef}
+                    onPaste={(e) => e.preventDefault()}
                     className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded"
                   />
+                  {errors.rePassword && (
+                    <p className="text-red-500 mt-1 text-sm">
+                      {errors.rePassword}
+                    </p>
+                  )}
                 </div>
                 {/* University Year */}
                 <div>
                   <select
                     id="year"
                     name="year"
-                    required
                     onChange={handleChange}
                     value={formData.year}
                     className="block w-full px-3 py-2  rounded-md bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 placeholder-gray-400 border-b"
@@ -168,6 +261,9 @@ const SignUpPage = () => {
                     <option value="4th Year">4th Year</option>
                     <option value="Alumni">Alumni</option>
                   </select>
+                  {errors.year && (
+                    <p className="text-red-500 mt-1 text-sm">{errors.year}</p>
+                  )}
                 </div>
                 <div>
                   <button
