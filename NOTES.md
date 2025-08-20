@@ -276,3 +276,12 @@ Day 10
 Added CORS so frontend and backend requests can be handled
 
 API routes are for the backend
+
+======================================================
+Day 14
+======================================================
+Rate Limiting
+
+- This prevents multiple button presses (eg on sign up)
+- Add a loading state that disables the button while form is submitting (Show loading spinner ), prevent further clicks until form submitted
+-

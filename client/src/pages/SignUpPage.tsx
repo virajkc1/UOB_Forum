@@ -1,10 +1,14 @@
 import { useRef, useState } from "react";
-import { EyeClosed, Eye } from "lucide-react";
+import { EyeClosed, Eye, Loader2, CheckCircle } from "lucide-react";
 import type { ChangeEvent } from "react";
 import myPhoto from "../assets/signup_left_image.png";
+import { Link } from "react-router-dom";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [backendError, setBackendError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submit, setSubmit] = useState(false);
   //State for the form data
   const [formData, setFormData] = useState({
     name: "",
@@ -109,6 +113,11 @@ const SignUpPage = () => {
     if (hasErrors) {
       return;
     }
+    //checking the user isSubmitting
+    if (isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
     //Here the form can be submitted
     try {
       const response = await fetch("http://localhost:5000/api/auth/register", {
@@ -120,25 +129,33 @@ const SignUpPage = () => {
       });
       const data = await response.json();
 
-      if (response.ok) {
-        alert(data.message);
-        // Clear form on success
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          year: "",
-          role: "student",
-        });
-        if (rePasswordRef.current) {
-          rePasswordRef.current.value = "";
-        }
+      if (
+        !response.ok &&
+        data.message === "Account already created, Please try Login"
+      ) {
+        setBackendError(data.message);
       } else {
-        alert(data.message);
+        setSubmit(true);
       }
+
+      // if (response.ok) {
+      //   // Clear form on success
+      //   setFormData({
+      //     name: "",
+      //     email: "",
+      //     password: "",
+      //     year: "",
+      //     role: "student",
+      //   });
+      //   if (rePasswordRef.current) {
+      //     rePasswordRef.current.value = "";
+      //   }
+      //Form Submitted Successfully
     } catch (error) {
       alert("Registration failed. Please try again.");
       console.error("Registration error:", error);
+    } finally {
+      setIsSubmitting(false); //this will set isSubmitting back to false
     }
   };
 
@@ -149,7 +166,9 @@ const SignUpPage = () => {
         <img
           src={myPhoto}
           alt="Left"
-          className="w-[80vh] h-[80vh] object-cover border-0"
+          onMouseDown={(e) => e.preventDefault()}
+          tabIndex={-1}
+          className="block w-[80vh] h-[80vh] object-cover border-0 select-none"
         />
       </div>
       <div className="flex flex-col flex-1 justify-center py-12 sm:px-6 lg:px-8">
@@ -159,133 +178,184 @@ const SignUpPage = () => {
               Logo<span className="underline">Company</span>
             </span>
           </div>
-          <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Create an account
-            </h2>
-          </div>
-          {/* Defining the form */}
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
-            <div className="bg-white py-8 px-6 shadow-lg sm:rounded-lg ">
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                {/* Full Name Field */}
-                <div>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    onChange={handleChange}
-                    value={formData.name}
-                    placeholder="Full Name"
-                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
-                  />
-                  {errors.name && (
-                    <p className="text-red-500 mt-1 text-sm">{errors.name}</p>
-                  )}
-                </div>
-
-                {/* Email Field */}
-                <div>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    onChange={handleChange}
-                    value={formData.email}
-                    pattern="^[a-zA-Z0-9._%+-]+@(student\.bham\.ac\.uk|alumni\.bham\.ac\.uk)$"
-                    title="Please enter a valid student email"
-                    placeholder="Student Email"
-                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 mt-1 text-sm">{errors.email}</p>
-                  )}
-                </div>
-                {/* Password */}
-                <div className="relative w-full max-w-sm">
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
-                    onChange={handleChange}
-                    value={formData.password}
-                    className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded-md"
-                  />
-                  {errors.password && (
-                    <p className="text-red-500 mt-1 text-sm">
-                      {errors.password}
-                    </p>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-0 p-1 top-1/2 transform -translate-y-1/2 text-gray-600"
-                  >
-                    {showPassword ? <Eye /> : <EyeClosed />}
-                  </button>
-                </div>
-                {/* Re-type Password */}
-                <div className="relative w-full max-w-sm">
-                  <input
-                    id="re_password"
-                    name="re_password"
-                    type="password"
-                    placeholder="Re-type password"
-                    ref={rePasswordRef}
-                    onPaste={(e) => e.preventDefault()}
-                    className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded"
-                  />
-                  {errors.rePassword && (
-                    <p className="text-red-500 mt-1 text-sm">
-                      {errors.rePassword}
-                    </p>
-                  )}
-                </div>
-                {/* University Year */}
-                <div>
-                  <select
-                    id="year"
-                    name="year"
-                    onChange={handleChange}
-                    value={formData.year}
-                    className="block w-full px-3 py-2  rounded-md bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 placeholder-gray-400 border-b"
-                  >
-                    <option value="" disabled className="text-gray-400">
-                      Current Year
-                    </option>
-                    <option value="Foundation Year">Foundation Year</option>
-                    <option value="1st Year">1st Year</option>
-                    <option value="2nd Year">2nd Year</option>
-                    <option value="3rd Year">3rd Year</option>
-                    <option value="4th Year">4th Year</option>
-                    <option value="Alumni">Alumni</option>
-                  </select>
-                  {errors.year && (
-                    <p className="text-red-500 mt-1 text-sm">{errors.year}</p>
-                  )}
-                </div>
-                <div>
-                  <button
-                    type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    <span>Sign up</span>
-                  </button>
-                </div>
-                {/* Sign In Link */}
-                <div className="mt-6 text-center">
-                  <span className="text-black">Already have an account? </span>
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 hover:text-blue-500"
-                  >
-                    Sign in
-                  </a>
-                </div>
-              </form>
+          {!submit && (
+            <div className="sm:mx-auto sm:w-full sm:max-w-md">
+              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Create an account
+              </h2>
             </div>
-          </div>
+          )}
+          {/* Defining the form */}
+          {!submit ? (
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
+              <div className="bg-white py-8 px-6 shadow-lg sm:rounded-lg ">
+                {backendError && (
+                  <div className="text-red-500 text-sm font-small mb-3 rounded-md">
+                    {backendError}
+                  </div>
+                )}
+                <form className="space-y-5" onSubmit={handleSubmit}>
+                  {/* Full Name Field */}
+                  <div>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      onChange={handleChange}
+                      value={formData.name}
+                      autoFocus
+                      placeholder="Full Name"
+                      className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                    />
+                    {errors.name && (
+                      <p className="text-red-500 mt-1 text-sm">{errors.name}</p>
+                    )}
+                  </div>
+
+                  {/* Email Field */}
+                  <div>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      onChange={handleChange}
+                      value={formData.email}
+                      pattern="^[a-zA-Z0-9._%+-]+@(student\.bham\.ac\.uk|alumni\.bham\.ac\.uk)$"
+                      title="Please enter a valid student email"
+                      placeholder="Student Email"
+                      className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 mt-1 text-sm">
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+                  {/* Password */}
+                  <div className="relative w-full max-w-sm">
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      onChange={handleChange}
+                      value={formData.password}
+                      className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded-md"
+                    />
+                    {errors.password && (
+                      <p className="text-red-500 mt-1 text-sm">
+                        {errors.password}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-0 p-1 top-1/2 transform -translate-y-1/2 text-gray-600"
+                    >
+                      {showPassword ? <Eye /> : <EyeClosed />}
+                    </button>
+                  </div>
+                  {/* Re-type Password */}
+                  <div className="relative w-full max-w-sm">
+                    <input
+                      id="re_password"
+                      name="re_password"
+                      type="password"
+                      placeholder="Re-type password"
+                      ref={rePasswordRef}
+                      // onPaste={(e) => e.preventDefault()}
+                      className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded"
+                    />
+                    {errors.rePassword && (
+                      <p className="text-red-500 mt-1 text-sm">
+                        {errors.rePassword}
+                      </p>
+                    )}
+                  </div>
+                  {/* University Year */}
+                  <div>
+                    <select
+                      id="year"
+                      name="year"
+                      onChange={handleChange}
+                      value={formData.year}
+                      className="block w-full px-3 py-2  rounded-md bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 placeholder-gray-400 border-b"
+                    >
+                      <option value="" disabled className="text-gray-400">
+                        Current Year
+                      </option>
+                      <option value="Foundation Year">Foundation Year</option>
+                      <option value="1st Year">1st Year</option>
+                      <option value="2nd Year">2nd Year</option>
+                      <option value="3rd Year">3rd Year</option>
+                      <option value="4th Year">4th Year</option>
+                      <option value="Alumni">Alumni</option>
+                    </select>
+                    {errors.year && (
+                      <p className="text-red-500 mt-1 text-sm">{errors.year}</p>
+                    )}
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting} //if False, it works else doesnt
+                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      {isSubmitting ? (
+                        <div className="flex items-center">
+                          <Loader2 className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
+                          <span>Signing up...</span>
+                        </div>
+                      ) : (
+                        <span>Sign up</span>
+                      )}
+                    </button>
+                  </div>
+                  {/* Sign In Link */}
+                  <div className="mt-6 text-center">
+                    <span className="text-black">
+                      Already have an account?{" "}
+                    </span>
+                    <Link
+                      to="/login"
+                      className="font-medium text-blue-600 hover:text-blue-500"
+                    >
+                      Sign in
+                    </Link>
+                  </div>
+                </form>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
+              <div className="bg-white py-8 px-6 shadow-lg sm:rounded-lg flex flex-col items-center justify-center">
+                {/* Lucide check circle icon */}
+                <CheckCircle
+                  className="text-green-500 w-16 h-16 mb-4"
+                  strokeWidth={2.5}
+                />
+
+                <h1 className="text-2xl font-bold m-4  text-center">
+                  Account Created
+                  <br />
+                  Successfully!
+                </h1>
+                <p className="text-gray-700 mb-6 text-center">
+                  Welcome aboard,{" "}
+                  <span className="font-semibold">{formData.name}</span>!<br />
+                  Your account has been created.
+                </p>
+                <div className="w-full flex justify-center text-center">
+                  <Link
+                    to="/forum"
+                    className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500]"
+                  >
+                    Continue
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ export const registerUser = async (req: Request, res: Response) => {
     }
     const userRole = role || "student";
     //check the user exists - if so DONT REGISTER THEM, ACCOUNT ALREADY MADE
-    const existingUser = await User.findOne({ email: email });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
         .status(400)
