@@ -1,18 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Menu,
-  X,
-  Search,
-  Bell,
-  User,
-  ChevronRight,
-  MessageCircle,
-  Users,
-  BookOpen,
-  GraduationCap,
-} from "lucide-react";
-
+import { ChevronRight, Users, GraduationCap } from "lucide-react";
+import HeroImage from "../assets/abstract_hero_image.png";
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -79,7 +68,7 @@ const HomePage = () => {
               <div className="hidden md:flex items-center space-x-4">
                 <Link
                   to="/signup"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium"
+                  className=" px-3 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200"
                 >
                   Sign up
                 </Link>
@@ -90,24 +79,20 @@ const HomePage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-100 via-blue-800 to-purple-900 text-white">
+      <section
+        className="bg-cover bg-center"
+        style={{ backgroundImage: `url(${HeroImage})` }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="flex flex-col lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-5xl font-bold leading-tight text-center mb-6">
-                Empowering the next generation of learners
+              <h1 className="text-5xl font-bold leading-tight text-center mb-6 text-black">
+                Let's learn together
               </h1>
-              <p className="text-xl text-blue-100 mb-8 leading-relaxed text-center">
-                Join our vibrant community of students, teachers, and
-                professionals.
+              <p className="text-xl text-black-100 mb-8 leading-relaxed text-center text-black">
+                Join our community of University students & Alumni to help with
+                your problems
               </p>
-              <Link
-                to="/signup"
-                className="flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-900 transition-colors duration-200 text-center mx-auto justify-center w-fit"
-              >
-                Join ForumSite
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </Link>
             </div>
           </div>
         </div>
