@@ -284,4 +284,44 @@ Rate Limiting
 
 - This prevents multiple button presses (eg on sign up)
 - Add a loading state that disables the button while form is submitting (Show loading spinner ), prevent further clicks until form submitted
--
+- ======================================================
+  Day 15
+  ======================================================
+
+1. Create the HomePage
+
+2. Create the individual dashboard for each user
+
+======================================================
+HTML notes
+
+Tailwind CSS notes
+For fixed nav bar - set top: 0 (so top of viewport) & position is fixed
+
+z-50 means the z index - refers to where it is
+#so if no position is defined, higher the z value, the higher it is on the display
+
+Position:
+fixed - always stays in same place regardless of viewport
+sticky - scrolls within parent container else its gone
+
+Dashboard Page
+
+1. User Signs up
+2. User Logs In
+
+3. Returns a token and store it in the localStorage
+
+Instead of localStorage - it needs to be stored in cookies
+res.cookie("access*token", token, { #defined an access token after login
+httpOnly: true, #only http reqs
+secure: process.env.NODE_ENV === "development" ? false : true,
+sameSite: process.env.NODE_ENV === "development" ? false : true,
+maxAge: 30 * 60 \_ 1000, //TOKEN lasts for 30mins (add refresh tokens too)
+});
+#secure is saying https reqs only but in dev we are http
+#sameSite means no cross origins but in this case we do have that so false in devlopment
+#maxAge is the 30mins
+
+#Now im using axios due to better TS configs and better error handling
+#then i will fetch

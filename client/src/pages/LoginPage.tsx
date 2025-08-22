@@ -3,6 +3,7 @@ import { EyeClosed, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ChangeEvent } from "react";
 import myPhoto from "../assets/signup_left_image.png";
+import api from "@/lib/api";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -62,22 +63,12 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await api.post("/auth/login", formData);
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (response.status === 200) {
         // Handle successful login (store token, redirect, etc.)
-        console.log("Login successful:", data);
+        console.log("Login successful:", response.data);
         // You can redirect to dashboard here
-      } else {
-        setBackendError(data.message || "Login failed");
       }
     } catch (error) {
       setBackendError("Login failed. Please try again.");

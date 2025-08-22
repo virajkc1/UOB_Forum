@@ -1,7 +1,7 @@
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
-import ForumPage from "./pages/ForumPage";
+import ForumPage from "./pages/DashboardPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
   return (

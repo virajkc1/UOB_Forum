@@ -1,18 +1,14 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Users, GraduationCap } from "lucide-react";
 import HeroImage from "../assets/abstract_hero_image.png";
 const HomePage = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <div className="min-h-screen bg-white">
       {/* Top Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200">
+      <nav
+        className="fixed bg-white top-0 border-b border-gray-200 w-full
+      "
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo and Brand */}
@@ -84,12 +80,12 @@ const HomePage = () => {
         style={{ backgroundImage: `url(${HeroImage})` }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="flex flex-col lg:grid-cols-2 gap-12 items-center">
+          <div className="flex flex-col lg:grid-cols-2 gap-12 items-center h-96">
             <div>
-              <h1 className="text-5xl font-bold leading-tight text-center mb-6 text-black">
-                Let's learn together
+              <h1 className="text-5xl font-bold leading-tight text-center mt-6 text-black">
+                Work together, learn together
               </h1>
-              <p className="text-xl text-black-100 mb-8 leading-relaxed text-center text-black">
+              <p className="text-lg text-black-100 mt-6 mb-8 leading-relaxed text-center text-black">
                 Join our community of University students & Alumni to help with
                 your problems
               </p>

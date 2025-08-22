@@ -79,6 +79,15 @@ export const loginUser = async (req: Request, res: Response) => {
       expiresIn: "1h",
     });
     //returns the token to the user
+
+    //Set the cookie up with the token
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "development" ? false : true,
+      sameSite: process.env.NODE_ENV === "development" ? false : true,
+      maxAge: 30 * 60 * 1000, //TOKEN lasts for 30mins (add refresh tokens too)
+    });
+
     return res.status(200).json({ token });
   } catch (error) {
     return res.status(400).json(error);

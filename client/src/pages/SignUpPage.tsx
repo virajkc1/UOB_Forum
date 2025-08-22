@@ -3,6 +3,7 @@ import { EyeClosed, Eye, Loader2, CheckCircle } from "lucide-react";
 import type { ChangeEvent } from "react";
 import myPhoto from "../assets/signup_left_image.png";
 import { Link } from "react-router-dom";
+import api from "../lib/api";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -120,39 +121,21 @@ const SignUpPage = () => {
     setIsSubmitting(true);
     //Here the form can be submitted
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-
-      if (
-        !response.ok &&
-        data.message === "Account already created, Please try Login"
-      ) {
-        setBackendError(data.message);
-      } else {
+      const response = await api.post("/auth/register", formData);
+      if (response.status === 201) {
+        console.log("Registration successful:", response.data);
         setSubmit(true);
       }
-
-      // if (response.ok) {
-      //   // Clear form on success
-      //   setFormData({
-      //     name: "",
-      //     email: "",
-      //     password: "",
-      //     year: "",
-      //     role: "student",
-      //   });
-      //   if (rePasswordRef.current) {
-      //     rePasswordRef.current.value = "";
-      //   }
-      //Form Submitted Successfully
-    } catch (error) {
-      alert("Registration failed. Please try again.");
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data.message ===
+          "Account already created, Please try Login"
+      )
+        setBackendError(error.response.data.message);
+      else {
+        alert("Registration failed, please try again later");
+      }
       console.error("Registration error:", error);
     } finally {
       setIsSubmitting(false); //this will set isSubmitting back to false
@@ -178,14 +161,11 @@ const SignUpPage = () => {
               Logo<span className="underline">Company</span>
             </span>
           </div>
-          {!submit && (
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Create an account
-              </h2>
-            </div>
-          )}
-          {/* Defining the form */}
+          <div className="sm:mx-auto sm:w-full sm:max-w-md">
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              Create an account
+            </h2>
+          </div>
           {!submit ? (
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
               <div className="bg-white py-8 px-6 shadow-lg sm:rounded-lg ">
@@ -347,7 +327,7 @@ const SignUpPage = () => {
                 </p>
                 <div className="w-full flex justify-center text-center">
                   <Link
-                    to="/forum"
+                    to="/login"
                     className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500]"
                   >
                     Continue
