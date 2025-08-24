@@ -2,10 +2,11 @@ import { useRef, useState } from "react";
 import { EyeClosed, Eye, Loader2, CheckCircle } from "lucide-react";
 import type { ChangeEvent } from "react";
 import myPhoto from "../assets/signup_left_image.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../lib/api";
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [backendError, setBackendError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -156,7 +157,11 @@ const SignUpPage = () => {
       </div>
       <div className="flex flex-col flex-1 justify-center py-12 sm:px-6 lg:px-8">
         <div className="max-w-md w-full mx-auto">
-          <div className="flex justify-center">
+          <div
+            className="flex justify-center"
+            onClick={() => navigate("/")}
+            style={{ cursor: "pointer" }}
+          >
             <span className="text-lg text-black font-bold">
               Logo<span className="underline">Company</span>
             </span>

@@ -5,11 +5,13 @@ import authRoutes from "./routes/auth.route";
 import questionRoutes from "./routes/question.route";
 import answerRoutes from "./routes/answer.route";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
 //Middleware added to parse the request body
 app.use(express.json());
+app.use(cookieParser()); //for cookie parsing into JS objects
 app.use(
   cors({
     origin: "http://localhost:5173",

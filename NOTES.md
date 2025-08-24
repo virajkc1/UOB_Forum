@@ -325,3 +325,9 @@ maxAge: 30 * 60 \_ 1000, //TOKEN lasts for 30mins (add refresh tokens too)
 
 #Now im using axios due to better TS configs and better error handling
 #then i will fetch
+
+#I had an error with lucide-react today - i had to update to latest version
+
+#First the auth middleware, now checks the JWT in the cookie rather than cookie alone
+Cookie Parser dependency - Express middleware, reads cookies header & parses it as a JS object and joins it to req.cookies
+(Cookie Headers - eg: the JWT, the type of request, all the meta data behind the cookie)

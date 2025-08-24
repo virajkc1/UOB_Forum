@@ -13,8 +13,8 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    //Extract the JWT
-    const token = req.headers.authorization?.split(" ")[1];
+    //Extract the JWT from cookies
+    const token = req.cookies.access_token; //dont get the jwt directly but instead from the cookie
     if (!token) {
       return res.status(401).json({ message: "Access token invalid" });
     }
