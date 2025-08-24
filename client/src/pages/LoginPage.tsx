@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { EyeClosed, Eye } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { ChangeEvent } from "react";
 import myPhoto from "../assets/signup_left_image.png";
-import api from "@/lib/api";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [backendError, setBackendError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -63,15 +65,13 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await api.post("/auth/login", formData);
-
-      if (response.status === 200) {
-        // Handle successful login (store token, redirect, etc.)
-        console.log("Login successful:", response.data);
-        // You can redirect to dashboard here
-      }
-    } catch (error) {
-      setBackendError("Login failed. Please try again.");
+      await login(formData.email, formData.password);
+      // Login successful, redirect to dashboard
+      navigate("/forum");
+    } catch (error: any) {
+      setBackendError(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
       console.error("Login error:", error);
     } finally {
       setIsSubmitting(false);
@@ -162,9 +162,7 @@ const LoginPage = () => {
                         : "bg-[#ff4900] hover:bg-[#e64500] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     }`}
                   >
-                    <Link to="/forum">
-                      {isSubmitting ? "Signing in..." : "Sign in"}
-                    </Link>
+                    {isSubmitting ? "Signing in..." : "Sign in"}
                   </button>
                 </div>
 

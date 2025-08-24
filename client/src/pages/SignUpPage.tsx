@@ -205,10 +205,10 @@ const SignUpPage = () => {
                       type="email"
                       onChange={handleChange}
                       value={formData.email}
-                      pattern="^[a-zA-Z0-9._%+-]+@(student\.bham\.ac\.uk|alumni\.bham\.ac\.uk)$"
+                      pattern="[a-zA-Z0-9._%+-]+@(student\.bham\.ac\.uk|alumni\.bham\.ac\.uk)"
                       title="Please enter a valid student email"
                       placeholder="Student Email"
-                      className="appearance-none block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                      className="appearance-none block w-full px-3 py-2 border-b border-gray-400 placeholder-gray-400 focus:outline-none focus:border-blue-500"
                     />
                     {errors.email && (
                       <p className="text-red-500 mt-1 text-sm">

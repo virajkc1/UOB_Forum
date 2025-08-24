@@ -35,15 +35,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 //defining our custom web hook
 export const useAuth = () => {
-  const context = useContext(AuthContext); //defines a variable, that we will use the context
+  const context = useContext(AuthContext); //defines a variable, that we will use the AuthContext
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider"); //means AuthContext wasnt correctly configured
   }
-  return context;
+  return context; //return the context
 };
 
+//type definition used for Props
 interface AuthProviderProps {
-  children: ReactNode;
+  children: ReactNode; //the props can have any child component
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
