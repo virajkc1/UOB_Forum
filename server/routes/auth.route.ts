@@ -1,6 +1,11 @@
 //Importing the Router here
 import { Router, Request } from "express";
-import { registerUser, loginUser } from "../controllers/auth.controller";
+import {
+  registerUser,
+  loginUser,
+  logout,
+  verifyAuth,
+} from "../controllers/auth.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
 
 interface AuthRequest extends Request {
@@ -27,4 +32,6 @@ router.get("/profile", authMiddleware, (req: AuthRequest, res) => {
     user: req.user,
   });
 });
+router.get("/verify", authMiddleware, verifyAuth); // New route
+router.post("/logout", logout); // New route
 export default router;

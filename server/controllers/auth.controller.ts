@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { AuthRequest } from "../types/types";
 //Above are Typescript interfaces inbuilt in Express for TypeScript
 dotenv.config();
 
@@ -91,5 +92,22 @@ export const loginUser = async (req: Request, res: Response) => {
     return res.status(200).json({ token });
   } catch (error) {
     return res.status(400).json(error);
+  }
+};
+export const verifyAuth = async (req: AuthRequest, res: Response) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(401).json({ message: "Not authenticated" });
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Logout failed" });
   }
 };

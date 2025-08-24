@@ -63,6 +63,20 @@ export const getAllQuestions = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// Get only the current user's questions
+export const getUserQuestions = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user._id;
+    const userQuestions = await Question.find({ author: userId })
+      .populate("author", "name email")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json(userQuestions);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const deleteQuestion = async (req: AuthRequest, res: Response) => {
   try {
     //To delete a question

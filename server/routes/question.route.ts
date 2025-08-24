@@ -5,6 +5,7 @@ import {
   createQuestion,
   deleteQuestion,
   getAllQuestions,
+  getUserQuestions,
   getQuestion,
   updateQuestion,
 } from "../controllers/question.controller";
@@ -14,8 +15,9 @@ const router = Router();
 //POST REQUESTS
 router.post("/", authMiddleware, createQuestion);
 //GET REQUESTS
+router.get("/user", authMiddleware, getUserQuestions); // Get user's questions only
+router.get("/all", authMiddleware, getAllQuestions); // Get all questions from everyone
 router.get("/:id", authMiddleware, getQuestion);
-router.get("/", authMiddleware, getAllQuestions);
 //DELETE REQUESTS
 router.delete("/:id", authMiddleware, deleteQuestion);
 //PUT REQUESTS
