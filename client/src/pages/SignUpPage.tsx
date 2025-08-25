@@ -6,7 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../lib/api";
 
 const SignUpPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //instance of useNavigate
+  //states for the form
   const [showPassword, setShowPassword] = useState(false);
   const [backendError, setBackendError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,12 +31,13 @@ const SignUpPage = () => {
   });
 
   //Ref for the re-type password field
-  const rePasswordRef = useRef<HTMLInputElement>(null);
+  const rePasswordRef = useRef<HTMLInputElement>(null); //react will use this to access the value of the re-type password field, initially null because it is not yet rendered
 
   //Function to handle the change in the form
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement> //the event is a changeEvent that comes from input or select elements
   ) => {
+    //changes the state variable formData on a change to any input elements
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -53,12 +55,14 @@ const SignUpPage = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+      //checks if the email contains the regex criteria
       return "Please enter a valid email address";
     }
     const validDomain = ["student.bham.ac.uk", "alumni.bham.ac.uk"];
-    const domain = email.split("@")[1];
+    const domain = email.split("@")[1]; //second part of the string
 
     if (!validDomain.includes(domain)) {
+      //checks it includes
       return "Please enter a valid UOB student or alumni email ";
     }
 
@@ -96,7 +100,7 @@ const SignUpPage = () => {
     e.preventDefault();
 
     //defining the new errors
-
+    //note all the verifications returned an empty string so the newErrors object wont be undefined
     const newErrors = {
       name: validateName(formData.name),
       email: validateEmail(formData.email),
@@ -112,6 +116,7 @@ const SignUpPage = () => {
 
     //you want to set the newErrors to errors
     const hasErrors = Object.values(newErrors).filter(Boolean).length > 0;
+    //creates an Array with the object called newErrors values, looks for positive booleans, and length must be bigger than 0
     if (hasErrors) {
       return;
     }
@@ -247,7 +252,9 @@ const SignUpPage = () => {
                       name="re_password"
                       type="password"
                       placeholder="Re-type password"
-                      ref={rePasswordRef}
+                      ref={rePasswordRef} //references the useRef
+                      //defines the input to look at, only looks at it once, not after every re-render
+
                       // onPaste={(e) => e.preventDefault()}
                       className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded"
                     />

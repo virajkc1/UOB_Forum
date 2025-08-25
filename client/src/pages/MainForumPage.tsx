@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import QuestionList from "../components/QuestionList";
 import api from "../lib/api";
@@ -64,7 +64,9 @@ const MainForumPage = () => {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Access Denied
+          </h1>
           <p className="text-gray-600">Please log in to access the forum.</p>
         </div>
       </div>
