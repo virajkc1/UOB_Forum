@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-primary-color {
+  @apply bg-[#FE592E] text-white rounded-lg border-0 hover:bg-[#e64500] transition-colors duration-200 px-6 py-2 inline-flex items-center justify-center font-semibold;
+}
+.btn-secondary {
+  @apply hidden md:flex items-center space-x-4  border-gray-200 rounded-lg w-24 h-10 text-center justify-center hover:bg-gray-100  hover:border-none transition-colors duration-100 font-medium text-gray-700;
+}
+
+.green-primary-text {
+  @apply text-[#8ECC8E];
+}

@@ -1,134 +1,108 @@
 import { Link } from "react-router-dom";
-import { ChevronRight, Users, GraduationCap } from "lucide-react";
-import HeroImage from "../assets/abstract_hero_image.png";
+import { ChevronRight, GraduationCap } from "lucide-react";
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className=" bg-white">
       {/* Top Navigation Bar */}
-      <nav
-        className="fixed bg-white top-0 border-b border-gray-200 w-full
+      <div>
+        <nav
+          className="fixed bg-white top-0 border-b-2 border-gray-200 w-full
       "
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo and Brand */}
-            <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">F</span>
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              {/* Logo and Brand */}
+              <div className="flex items-center">
+                <Link to="/" className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
+                    <div className="w-6 h-6 bg-white rounded-lg flex items-center justify-center">
+                      <span className="text-gray-900 font-bold text-lg">U</span>
+                    </div>
+                  </div>
+                  <span className="text-xl font-bold green-primary-text">
+                    Unisun
+                  </span>
+                </Link>
+              </div>
+
+              {/* Desktop Navigation */}
+              <div className="hidden md:flex items-center space-x-8">
+                <Link to="/forums" className="btn-secondary">
+                  Forums
+                </Link>
+                <Link to="/topics" className="btn-secondary">
+                  Topics
+                </Link>
+                <Link to="/resources" className="btn-secondary">
+                  Resources
+                </Link>
+                <Link to="/about" className="btn-secondary">
+                  About
+                </Link>
+              </div>
+
+              {/* Right Side Actions */}
+              <div className="flex items-center space-x-4">
+                <div
+                  className="hidden md:flex items-center space-x-4 border-2 border-gray-200 rounded-lg w-24 h-10 text-center justify-center hover:bg-gray-700 hover:text-white hover:border-none  duration-200 font-semibold text-gray-700 transform transition-all  ease-in-out 
+            hover:scale-105 hover:shadow-xl"
+                >
+                  <Link to="/login">
+                    <span className="text-center ">Login</span>
+                  </Link>
                 </div>
-                <span className="text-xl font-bold text-gray-900">
-                  ForumSite
-                </span>
-              </Link>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              <Link
-                to="/forums"
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-              >
-                Forums
-              </Link>
-              <Link
-                to="/topics"
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-              >
-                Topics
-              </Link>
-              <Link
-                to="/resources"
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-              >
-                Resources
-              </Link>
-              <Link
-                to="/about"
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-              >
-                About
-              </Link>
-            </div>
-
-            {/* Right Side Actions */}
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center space-x-4">
-                <Link
-                  to="/login"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium"
+                <div
+                  className="hidden md:flex items-center space-x-4 text-center justify-center btn-primary-color transform transition-all duration-300 ease-in-out 
+            hover:scale-105 hover:shadow-xl w-24 h-10 whitespace-nowrap"
                 >
-                  Login
-                </Link>
-              </div>
-              <div className="hidden md:flex items-center space-x-4">
-                <Link
-                  to="/signup"
-                  className=" px-3 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200"
-                >
-                  Sign up
-                </Link>
+                  <Link to="/signup">Sign up</Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
 
-      {/* Hero Section */}
-      <section
-        className="bg-cover bg-center"
-        style={{ backgroundImage: `url(${HeroImage})` }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="flex flex-col lg:grid-cols-2 gap-12 items-center h-96">
-            <div>
-              <h1 className="text-5xl font-bold leading-tight text-center mt-6 text-black">
-                Work together, learn together
-              </h1>
-              <p className="text-lg text-black-100 mt-6 mb-8 leading-relaxed text-center text-black">
-                Join our community of University students & Alumni to help with
-                your problems
-              </p>
+        {/* Hero Section */}
+        <section className="min-h-screen bg-cover bg-center gradient-vertical bg-white text-black">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+            <div className="flex flex-col lg:grid-cols-2 gap-12 items-center h-96">
+              <div className="mt-24">
+                <h1 className="text-7xl pt-10 font-normal leading-tight text-center  text-black">
+                  <span className="text-black block text-left -mb-12 ml-10">
+                    Build a future
+                  </span>
+                  <br className="mt-0" />
+                  <span className="text-black block text-right -mt-10 mr-12 green-primary-text">
+                    ... in Unisun
+                  </span>
+                </h1>
+                <div className="max-w-screen-sm mx-auto">
+                  <p className="text-lg text-gray-700 mt-4 mb-8 leading-relaxed text-center ">
+                    Be part of a community of students and alumni to help you
+                    through your academic journey
+                  </p>
+                </div>
+                <div className="flex justify-center">
+                  <Link
+                    to="/signup"
+                    className="btn-primary-color inline-block px-6 py-3 rounded-lg text-center whitespace-nowrap w-auto hover:scale-105 hover:shadow-xl"
+                  >
+                    Join the Community
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              More than a platform
-            </h2>
-            <p className="text-xl text-gray-600">
-              Join thousands of active community members
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">10K+</div>
-              <div className="text-gray-600">Active Students</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
-              <div className="text-gray-600">Expert Teachers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">50K+</div>
-              <div className="text-gray-600">Discussions</div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* Features Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Students
+              <h2 className="text-3xl font-medium text-gray-900 mb-6">
+                How it works
               </h2>
               <p className="text-lg text-gray-600 mb-6">
                 Access free resources, connect with peers, and build your skills
@@ -158,34 +132,7 @@ const HomePage = () => {
 
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="order-2 lg:order-1 relative">
-              <div className="w-full h-80 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-2xl flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-20 h-20 bg-white/10 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <Users className="h-10 w-10 text-white/60" />
-                  </div>
-                  <p className="text-white/60">Teacher Community</p>
-                </div>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Teachers
-              </h2>
-              <p className="text-lg text-gray-600 mb-6">
-                Share your expertise, collaborate with other educators, and
-                access teaching resources. Help shape the future of education
-                through our community platform.
-              </p>
-              <Link
-                to="/teachers"
-                className="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center"
-              >
-                Learn more <ChevronRight className="ml-1 h-4 w-4" />
-              </Link>
-            </div>
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"></div>
         </div>
       </section>
 
