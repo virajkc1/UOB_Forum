@@ -1,72 +1,94 @@
 import { Link } from "react-router-dom";
 import { ChevronRight, GraduationCap } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import HomePage_1 from "../assets/homepage_icons/homepage_stack1.png";
+
 const HomePage = () => {
+  const { scrollY } = useScroll();
+
+  // Central text animation
+  const textOpacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const textY = useTransform(scrollY, [0, 10], [0, -50]);
+
+  // Top boxes move slower, subtle rotation
+  const rotateLeftTop = useTransform(scrollY, [0, 800], [5, 0]);
+
+  const yRightTop = useTransform(scrollY, [0, 800], [0, -200]);
+  const rotateRightTop = useTransform(scrollY, [0, 800], [-5, 0]);
+
   return (
     <div className=" bg-white">
       {/* Top Navigation Bar */}
-      <div>
-        <nav
-          className="fixed bg-white top-0 border-b-2 border-gray-200 w-full
-      "
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              {/* Logo and Brand */}
-              <div className="flex items-center">
-                <Link to="/" className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
-                    <div className="w-6 h-6 bg-white rounded-lg flex items-center justify-center">
-                      <span className="text-gray-900 font-bold text-lg">U</span>
-                    </div>
+      {/* <div> */}
+      <nav className=" bg-white  top-0 border-b-2 border-gray-200 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo and Brand */}
+            <div className="flex items-center">
+              <Link to="/" className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
+                  <div className="w-6 h-6 bg-white rounded-lg flex items-center justify-center">
+                    <span className="text-gray-900 font-bold text-lg">U</span>
                   </div>
-                  <span className="text-xl font-bold green-primary-text">
-                    Unisun
-                  </span>
-                </Link>
-              </div>
+                </div>
+                <span className="text-xl font-medium text-black">Unisun</span>
+              </Link>
+            </div>
 
-              {/* Desktop Navigation */}
-              <div className="hidden md:flex items-center space-x-8">
-                <Link to="/forums" className="btn-secondary">
-                  Forums
-                </Link>
-                <Link to="/topics" className="btn-secondary">
-                  Topics
-                </Link>
-                <Link to="/resources" className="btn-secondary">
-                  Resources
-                </Link>
-                <Link to="/about" className="btn-secondary">
-                  About
-                </Link>
-              </div>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/forums" className="btn-secondary">
+                Forums
+              </Link>
+              <Link to="/topics" className="btn-secondary">
+                Topics
+              </Link>
+              <Link to="/resources" className="btn-secondary">
+                Resources
+              </Link>
+              <Link to="/about" className="btn-secondary">
+                About
+              </Link>
+            </div>
 
-              {/* Right Side Actions */}
-              <div className="flex items-center space-x-4">
-                <div
-                  className="hidden md:flex items-center space-x-4 border-2 border-gray-200 rounded-lg w-24 h-10 text-center justify-center hover:bg-gray-700 hover:text-white hover:border-none  duration-200 font-semibold text-gray-700 transform transition-all  ease-in-out 
+            {/* Right Side Actions */}
+            <div className="flex items-center space-x-4">
+              <div
+                className="hidden md:flex items-center space-x-4 border-2 border-gray-200 rounded-lg w-24 h-10 text-center justify-center hover:bg-gray-700 hover:text-white hover:border-none  duration-200 font-semibold text-gray-700 transform transition-all  ease-in-out 
             hover:scale-105 hover:shadow-xl"
-                >
-                  <Link to="/login">
-                    <span className="text-center ">Login</span>
-                  </Link>
-                </div>
-                <div
-                  className="hidden md:flex items-center space-x-4 text-center justify-center btn-primary-color transform transition-all duration-300 ease-in-out 
+              >
+                <Link to="/login">
+                  <span className="text-center ">Login</span>
+                </Link>
+              </div>
+              <div
+                className="hidden md:flex items-center space-x-4 text-center justify-center btn-primary-color transform transition-all duration-300 ease-in-out 
             hover:scale-105 hover:shadow-xl w-24 h-10 whitespace-nowrap"
-                >
-                  <Link to="/signup">Sign up</Link>
-                </div>
+              >
+                <Link to="/signup">Sign up</Link>
               </div>
             </div>
           </div>
-        </nav>
+        </div>
+      </nav>
+      {/* Hero Section */}
+      <section className=" min-h-screen bg-cover bg-center gradient-vertical bg-white text-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="flex flex-col gap-12 items-center h-96">
+            <div className="m-6">
+              {/* Left Side */}
+              <motion.div
+                style={{ rotate: rotateLeftTop }}
+                className="bg-slate-500 absolute  right-32 w-52 h-52 rounded-xl z-10 shadow-xl "
+              ></motion.div>
 
-        {/* Hero Section */}
-        <section className="min-h-screen bg-cover bg-center gradient-vertical bg-white text-black">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-            <div className="flex flex-col lg:grid-cols-2 gap-12 items-center h-96">
-              <div className="mt-24">
+              {/* Right Side */}
+
+              {/* Central Text */}
+              <motion.div
+                style={{ opacity: textOpacity, y: textY }}
+                className="items-center justify-center"
+              >
                 <h1 className="text-7xl pt-10 font-normal leading-tight text-center  text-black">
                   <span className="text-black block text-left -mb-12 ml-10">
                     Build a future
@@ -82,19 +104,20 @@ const HomePage = () => {
                     through your academic journey
                   </p>
                 </div>
-                <div className="flex justify-center">
-                  <Link
-                    to="/signup"
-                    className="btn-primary-color inline-block px-6 py-3 rounded-lg text-center whitespace-nowrap w-auto hover:scale-105 hover:shadow-xl"
-                  >
-                    Join the Community
-                  </Link>
-                </div>
+              </motion.div>
+              <div className="flex justify-center">
+                <Link
+                  to="/signup"
+                  className="btn-primary-color inline-block px-6 py-3 rounded-lg text-center whitespace-nowrap w-auto hover:scale-105 hover:shadow-xl"
+                >
+                  Join the Community
+                </Link>
               </div>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+      {/* </div>
 
       {/* Features Section */}
       <section className="py-16 bg-gray-50">
@@ -117,25 +140,25 @@ const HomePage = () => {
               </Link>
             </div>
             <div className="relative">
-              <div className="w-full h-80 bg-gradient-to-br from-green-400/20 to-blue-400/20 rounded-2xl flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-20 h-20 bg-white/10 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <GraduationCap className="h-10 w-10 text-white/60" />
-                  </div>
-                  <p className="text-white/60">Student Resources</p>
-                </div>
-              </div>
+              <motion.div
+                style={{ y: yRightTop, rotate: rotateRightTop }}
+                className=" pt-10 rounded-xl z-10 shadow-xl"
+              >
+                <img
+                  src={HomePage_1}
+                  alt="Floating"
+                  className="w-full h-full object-cover rounded-xl"
+                />
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
-
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"></div>
         </div>
       </section>
-
       {/* Call to Action */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
