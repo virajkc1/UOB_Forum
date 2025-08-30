@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../../server/models/User.Model");
+const User = require("../models/User");
 
 // MongoDB connection
 let cachedConnection = null;
