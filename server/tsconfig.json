@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES6",
     "module": "commonjs",
     "outDir": "./dist",
     "rootDir": "./",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "types": ["node", "express", "jsonwebtoken", "cookie-parser", "cors"]
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules"]
 }
-// using es6 JS version
-// module is commonsj
