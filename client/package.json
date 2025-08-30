@@ -9,6 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "axios": "^1.11.0",
