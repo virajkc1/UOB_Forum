@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import HomePage_1 from "../assets/homepage_icons/homepage_stack1.png";
 import HomePage_2 from "../assets/homepage_icons/homepage_stack2.png";
