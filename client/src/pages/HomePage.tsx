@@ -133,19 +133,36 @@ const HomePage = () => {
 
       {/* Features Section */}
       <section className="mt-10 pt-16 bg-white border-t-2 border-gray-100">
-        <div className="flex justify-center items-center flex-col gap-4">
-          <div>
-            <h1>Features</h1>
+        <div className="flex justify-center items-center flex-col m-10 gap-4">
+          <div className="h-[120px]">
+            <h1 className="font-bold text-3xl green-primary-text">
+              HOW UNISUN WORKS
+            </h1>
           </div>
-          <div className="flex justify-between gap-10">
-            <div>
-              <h2>ger</h2>
+          <div className="flex justify-between gap-10 ">
+            <div className="w-[350px] m-10 h-[200px] tile-background rounded-xl shadow-xl">
+              <div className="flex flex-col items-center">
+                <h2 className="text-white font-bold mt-4 mb-[50px]">
+                  Create an Account
+                </h2>
+                <p className="text-gray-50">dsfsdfkjdfskdfjsdfkj</p>
+              </div>
             </div>
-            <div>
-              <h2>ger</h2>
+            <div className="w-[350px] m-10 h-[200px] tile-background rounded-xl shadow-xl">
+              <div className="flex flex-col items-center">
+                <h2 className="text-white  font-bold mt-4 mb-[50px]">
+                  Ask Questions
+                </h2>
+                <p className="text-gray-50">dsfsdfkjdfskdfjsdfkj</p>
+              </div>
             </div>
-            <div>
-              <h2>ger</h2>
+            <div className="w-[350px] m-10 h-[200px] tile-background rounded-xl shadow-xl">
+              <div className="flex flex-col items-center">
+                <h2 className="text-white font-bold mt-4 mb-[50px]">
+                  Help Others
+                </h2>
+                <p className="text-gray-50">dsfsdfkjdfskdfjsdfkj</p>
+              </div>
             </div>
           </div>
         </div>
