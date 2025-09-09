@@ -73,7 +73,7 @@ const HomePage = () => {
         </div>
       </nav>
       {/* Hero Section */}
-      <section className=" min-h-[200vh] bg-cover bg-center gradient-vertical bg-white text-black relative">
+      <section className=" min-h-[220vh] bg-cover bg-center gradient-vertical bg-white text-black relative">
         <div className="sticky top-0 z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <h1 className="text-7xl pt-10 font-normal leading-tight text-black">
             <span className=" block text-left  ml-40">Build a future</span>
@@ -84,8 +84,8 @@ const HomePage = () => {
           </h1>
           <div className="max-w-screen-sm mx-auto">
             <p className="text-lg text-gray-700 leading-relaxed text-center mb-5  ">
-              Be part of a community of students and alumni to help you through
-              your academic journey
+              A community of university students and alumni in your field to
+              help you out!
             </p>
           </div>
 
@@ -133,49 +133,19 @@ const HomePage = () => {
 
       {/* Features Section */}
       <section className="mt-10 pt-16 bg-white border-t-2 border-gray-100">
-        <div className="max-w-7xl mb-0  mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-5xl font-normal text-center pb-10 text-gray-900 mb-12">
-            How it works
-          </h2>
-          <div className="flex justify-center flex-wrap gap-16 ">
-            <div className="bg-[#cbe2cb] rounded-2xl shadow-md w-[360px] h-[400px] p-6 flex flex-col items-center text-center">
-              <div className="px-4 mb-2">
-                <h3 className="text-xl font-medium text-black flex justify-between items-center">
-                  <span>Create an account</span>
-                </h3>
-              </div>
-              <p className="text-gray-600">
-                This is a short description of feature 1.
-              </p>
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Feature 1"
-                className="mb-4 rounded-lg"
-              />
+        <div className="flex justify-center items-center flex-col gap-4">
+          <div>
+            <h1>Features</h1>
+          </div>
+          <div className="flex justify-between gap-10">
+            <div>
+              <h2>ger</h2>
             </div>
-
-            <div className="bg-[#cbe2cb] rounded-2xl shadow-lg w-[360px] h-[400px] p-6 flex flex-col items-center text-center">
-              <h3 className="text-xl font-medium mb-2">Ask Questions</h3>
-              <p className="text-gray-600">
-                This is a short description of feature 1.
-              </p>
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Feature 1"
-                className="mb-4 rounded-lg"
-              />
+            <div>
+              <h2>ger</h2>
             </div>
-
-            <div className="bg-[#cbe2cb] rounded-2xl shadow-lg w-[360px] h-[400px] p-6 flex flex-col items-center text-center">
-              <h3 className="text-xl font-medium mb-2">Help Others</h3>
-              <p className="text-gray-600">
-                This is a short description of feature 1.
-              </p>
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Feature 1"
-                className="mb-4 rounded-lg"
-              />
+            <div>
+              <h2>ger</h2>
             </div>
           </div>
         </div>
@@ -187,9 +157,9 @@ const HomePage = () => {
         </div>
       </section>
       {/* Call to Action */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-lg p-12">
+      <section className="py-20 bg-[#97e9ff]">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 ">
+          <div className=" rounded-2xl p-8 pl-6">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Begin your ForumSite journey
             </h2>
@@ -212,9 +182,14 @@ const HomePage = () => {
               </Link>
             </div>
           </div>
+          {/* <div>
+            <div className="w-[600px] ml-5 bg-white min-h-[300px] rounded-xl">
+              hello
+            </div>
+          </div> */}
         </div>
       </section>
-      <footer className="py-16 bg-blue-500">
+      <footer className="py-16 light-green-colour">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-16 items-center"></div>
         </div>

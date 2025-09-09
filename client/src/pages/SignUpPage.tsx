@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { EyeClosed, Eye, Loader2, CheckCircle } from "lucide-react";
 import type { ChangeEvent } from "react";
-import myPhoto from "../assets/signup_left_image.png";
+import myPhoto from "../assets/loginpage_icons/signup_left_image.png";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../lib/api";
 

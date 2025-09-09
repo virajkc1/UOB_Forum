@@ -2,8 +2,8 @@ import { useState } from "react";
 import { EyeClosed, Eye } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import type { ChangeEvent } from "react";
-import myPhoto from "../assets/signup_left_image.png";
 import { useAuth } from "../contexts/AuthContext";
+import myPhoto from "../assets/loginpage_icons/signup_left_image.png";
 
 const LoginPage = () => {
   const navigate = useNavigate();

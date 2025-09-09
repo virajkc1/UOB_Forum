@@ -12,3 +12,11 @@
 .green-primary-text {
   @apply text-[#8ECC8E];
 }
+
+.light-green-colour {
+  @apply bg-[#a2eba6];
+}
+
+.tile-background {
+  @apply bg-[#ffdc88];
+}
