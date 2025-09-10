@@ -73,12 +73,14 @@ const HomePage = () => {
         </div>
       </nav>
       {/* Hero Section */}
-      <section className=" min-h-[220vh] bg-cover bg-center gradient-vertical bg-white text-black relative">
+      <section className=" md:min-h-[220vh] max-w-screen bg-cover bg-center gradient-vertical bg-white text-black relative">
         <div className="sticky top-0 z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <h1 className="text-7xl pt-10 font-normal leading-tight text-black">
-            <span className=" block text-left  ml-40">Build a future</span>
+            <span className=" block md:text-left  md:ml-40">
+              Build a future
+            </span>
 
-            <span className="block text-right green-primary-text mb-5 mr-40">
+            <span className="block text-right  green-primary-text mb-10 md:mb-5  md:mr-40">
               ... in Unisun
             </span>
           </h1>
@@ -99,7 +101,7 @@ const HomePage = () => {
           </div>
         </div>
         <motion.div
-          className="absolute top-[30%] left-[5%] w-[450px] z-10 h-[300px] bg-red-500 rounded-lg"
+          className="absolute top-[30%] left-[5%] w-0 md:w-[450px] z-10 h-[200px] md:h-[300px] max-w-7xl mx-auto rounded-lg"
           style={{
             y: yLeftTop,
             willChange: "transform",
@@ -109,7 +111,7 @@ const HomePage = () => {
           }}
         ></motion.div>
         <motion.div
-          className="absolute top-[40%] left-[15%] w-[450px] h-[300px] rounded-lg overflow-hidden z-20 "
+          className="absolute top-[40%] left-[15%] w-0 md:w-[450px] h-[200px] md:h-[300px] rounded-lg overflow-hidden z-20 "
           style={{
             y: yLeftBottom,
             willChange: "transform",
@@ -119,7 +121,7 @@ const HomePage = () => {
           }}
         ></motion.div>
         <motion.div
-          className="absolute top-[25%] right-[5%] w-[450px] z-10 h-[300px] bg-red-500 rounded-lg"
+          className="absolute top-[25%] right-[5%] w-0 md:w-[450px] md:h-[300px] z-10  rounded-lg"
           style={{
             y: yLeftBottom,
             willChange: "transform",
@@ -132,15 +134,15 @@ const HomePage = () => {
       {/* </div>
 
       {/* Features Section */}
-      <section className="mt-10 pt-16 bg-white border-t-2 border-gray-100">
-        <div className="flex justify-center items-center flex-col m-10 gap-4">
+      <section className="mx-auto  pt-16 bg-white border-t-2 border-gray-100">
+        <div className="flex justify-center items-center flex-col mx-auto  gap-4">
           <div className="h-[120px]">
             <h1 className="font-bold text-3xl green-primary-text">
               HOW UNISUN WORKS
             </h1>
           </div>
-          <div className="flex justify-between gap-10 ">
-            <div className="w-[350px] m-10 h-[200px] tile-background rounded-xl shadow-xl">
+          <div className="flex flex-col sm:flex-row justify-between gap-10 ">
+            <div className="w-full sm:w-[300px] md:w-[350px] max-w-sm m-10 h-auto min-h-[200px] flex flex-col tile-background rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 duration-300">
               <div className="flex flex-col items-center">
                 <h2 className="text-white font-bold mt-4 mb-[50px]">
                   Create an Account
@@ -148,7 +150,7 @@ const HomePage = () => {
                 <p className="text-gray-50">dsfsdfkjdfskdfjsdfkj</p>
               </div>
             </div>
-            <div className="w-[350px] m-10 h-[200px] tile-background rounded-xl shadow-xl">
+            <div className="w-full sm:w-[300px] md:w-[350px] m-10 h-auto min-h-[200px] tile-background rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 duration-300">
               <div className="flex flex-col items-center">
                 <h2 className="text-white  font-bold mt-4 mb-[50px]">
                   Ask Questions
@@ -156,7 +158,7 @@ const HomePage = () => {
                 <p className="text-gray-50">dsfsdfkjdfskdfjsdfkj</p>
               </div>
             </div>
-            <div className="w-[350px] m-10 h-[200px] tile-background rounded-xl shadow-xl">
+            <div className="w-full sm:w-[300px] md:w-[350px] m-10 min-h-[200px] tile-background rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 duration-300">
               <div className="flex flex-col items-center">
                 <h2 className="text-white font-bold mt-4 mb-[50px]">
                   Help Others
@@ -168,16 +170,11 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"></div>
-        </div>
-      </section>
       {/* Call to Action */}
-      <section className="py-20 bg-[#97e9ff]">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 ">
-          <div className=" rounded-2xl p-8 pl-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+      <section className="p-[100px] border-t-2 border-gray-200 ">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 bg-[#97e9ff] rounded-2xl">
+          <div className=" flex flex-col  rounded-2xl p-8 pl-6">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4 items-center">
               Begin your ForumSite journey
             </h2>
             <p className="text-lg text-gray-600 mb-8">
@@ -206,7 +203,7 @@ const HomePage = () => {
           </div> */}
         </div>
       </section>
-      <footer className="py-16 light-green-colour">
+      <footer className="py-16 border-t-2 border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-16 items-center"></div>
         </div>
