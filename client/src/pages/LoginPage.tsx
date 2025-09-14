@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import type { ChangeEvent } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import myPhoto from "../assets/loginpage_icons/signup_left_image.png";
+import Logo from "../assets/homepage_icons/unisun_logo.png";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -91,9 +92,14 @@ const LoginPage = () => {
       <div className="flex flex-col flex-1 justify-center py-12 sm:px-6 lg:px-8">
         <div className="max-w-md w-full mx-auto">
           <div className="flex justify-center">
-            <span className="text-lg text-black font-bold">
-              Logo<span className="underline">Company</span>
-            </span>
+            <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center">
+              <img
+                src={Logo}
+                alt="Logo"
+                onClick={() => navigate("/")}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
           </div>
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">

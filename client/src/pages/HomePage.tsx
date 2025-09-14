@@ -252,7 +252,7 @@ const HomePage = () => {
                   <div className=" bg-white rounded-lg flex items-center justify-center">
                     <img src={Logo} alt="Logo" />
                   </div>
-                </div>{" "}
+                </div>
               </div>
             </div>
 
@@ -266,7 +266,7 @@ const HomePage = () => {
               </a>
 
               <a
-                href="https://linkedin.com/in/"
+                href="https://www.linkedin.com/in/viraj-chapaneri/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
