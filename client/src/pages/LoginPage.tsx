@@ -95,7 +95,7 @@ const LoginPage = () => {
             <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center">
               <img
                 src={Logo}
-                alt="Logo"
+                alt="Logo_home"
                 onClick={() => navigate("/")}
                 style={{ cursor: "pointer" }}
               />
