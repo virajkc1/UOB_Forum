@@ -345,7 +345,7 @@ const SignUpPage = () => {
                 </p>
                 <div className="w-full flex justify-center text-center">
                   <Link
-                    to="/login"
+                    to="/verify"
                     className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500]"
                   >
                     Continue

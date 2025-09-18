@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import QuestionForm from "../components/QuestionForm";
 import QuestionList from "../components/QuestionList";
 import api from "../lib/api";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 interface Question {
   _id: string;
@@ -62,18 +62,7 @@ const DashboardPage = () => {
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Access Denied
-          </h1>
-          <p className="text-gray-600">
-            Please log in to access the dashboard.
-          </p>
-        </div>
-      </div>
-    );
+    return <Navigate to="/" replace />;
   }
 
   return (

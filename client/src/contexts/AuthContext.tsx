@@ -81,9 +81,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
-      await api.post("/auth/logout");
-      setUser(null);
-      setIsAuthenticated(false);
+      await api.post("/auth/logout"); //must clear the cookie and user session when logging out then navigate to home page
+
+      setUser(null); //clears the user
+      setIsAuthenticated(false); //user not authenticated
     } catch (error) {
       console.error("Logout error:", error);
     }

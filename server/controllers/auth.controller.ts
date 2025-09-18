@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { AuthRequest } from "../types/types";
+import { sendVerificationEmail } from "../api/brevo.api";
 //Above are Typescript interfaces inbuilt in Express for TypeScript
 dotenv.config();
 
@@ -16,9 +17,11 @@ export const registerUser = async (req: Request, res: Response) => {
     if (!name || !email || !password || !year) {
       return res.status(400).json({ message: "All fields must be entered" });
     }
+
     const userRole = role || "student";
+
     //check the user exists - if so DONT REGISTER THEM, ACCOUNT ALREADY MADE
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email }).exec();
     if (existingUser) {
       return res
         .status(400)
@@ -29,24 +32,78 @@ export const registerUser = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //Adding a new user to the schema
+    // i didnt use the spread operator here as what if the user has additional fields in the request
+
+    // ✅ Generate a verification code and expiry time
+    const verificationCode = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
+    const verificationExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
     const newUser = new User({
-      // i didnt use the spread operator here as what if the user has additional fields in the request
       name,
       email,
       password: hashedPassword,
       year,
       role: userRole,
+      verified: false, //we add a unverified stage
+      verificationCode,
+      verificationExpires,
     });
 
     await newUser.save();
 
-    res.status(201).json({ message: "User created successfully" });
+    // ✅ Send the verification code via email using Brevo
+    await sendVerificationEmail(newUser.email, newUser.name, verificationCode);
+
+    //Respond to frontend
+    res.status(201).json({
+      message:
+        "Unverified User created and verification code sent successfully",
+    });
   } catch (error) {
     res.status(400).json({ message: `${error}` });
   }
 };
 
+export const verifyEmail = async (req: Request, res: Response) => {
+  try {
+    const { email, code } = req.body;
+    //Email or Code are missing
+    if (!email || !code) {
+      return res.status(400).json({ message: "Email and code are missing" });
+    }
+    //No user found
+    const user = await User.findOne({ email }); //without await, you cant wait for response so you get a QUERY OBJECT - a pending database operation
+    if (!user) {
+      return res.status(400).json({ message: "No User Found" });
+    }
+    //User already verified
+    if (user.verified) {
+      return res.status(400).json({ message: "User already verified" });
+    }
+    if (!user.verificationCode || !user.verificationExpires) {
+      return res.status(400).json({ message: "No verification code found" });
+    }
+
+    if (Date.now() > user.verificationExpires.getTime()) {
+      return res.status(400).json({ message: "Verification code expired" });
+    }
+
+    if (user.verificationCode !== code) {
+      return res.status(400).json({ message: "Invalid verification code" });
+    }
+    // ✅ Passed all checks → mark as verified
+    user.verified = true;
+    user.verificationCode = undefined;
+    user.verificationExpires = undefined;
+    await user.save();
+    return res.status(200).json({ message: "Email verified successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 export const loginUser = async (req: Request, res: Response) => {
   try {
     //Get the request info

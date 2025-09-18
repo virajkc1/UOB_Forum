@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import QuestionList from "../components/QuestionList";
 import api from "../lib/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 
 interface Question {
   _id: string;
@@ -20,7 +20,7 @@ const MainForumPage = () => {
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [error, setError] = useState("");
-
+  const navigate = useNavigate(); //define a variable to user the navigate function
   useEffect(() => {
     if (isAuthenticated) {
       fetchAllQuestions();
@@ -48,7 +48,12 @@ const MainForumPage = () => {
   };
 
   const handleLogout = async () => {
-    await logout();
+    try {
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   if (isLoading) {
@@ -61,16 +66,7 @@ const MainForumPage = () => {
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Access Denied
-          </h1>
-          <p className="text-gray-600">Please log in to access the forum.</p>
-        </div>
-      </div>
-    );
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -81,7 +77,7 @@ const MainForumPage = () => {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
               <Link
-                to="/forum"
+                to="/"
                 className="text-blue-600 hover:text-blue-800 font-medium"
               >
                 ← Back to Dashboard
@@ -94,7 +90,7 @@ const MainForumPage = () => {
             <div className="flex items-center space-x-4">
               <span className="text-gray-600">Welcome, {user?.name}!</span>
               <button
-                onClick={handleLogout}
+                onClick={() => handleLogout()}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
               >
                 Logout

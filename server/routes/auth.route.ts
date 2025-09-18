@@ -5,6 +5,7 @@ import {
   loginUser,
   logout,
   verifyAuth,
+  verifyEmail,
 } from "../controllers/auth.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
 
@@ -24,6 +25,7 @@ interface AuthRequest extends Request {
 const router = Router();
 
 router.post("/register", registerUser);
+router.post("/verify", verifyEmail);
 router.post("/login", loginUser);
 
 router.get("/profile", authMiddleware, (req: AuthRequest, res) => {
@@ -32,6 +34,6 @@ router.get("/profile", authMiddleware, (req: AuthRequest, res) => {
     user: req.user,
   });
 });
-router.get("/verify", authMiddleware, verifyAuth); // New route
+router.get("/verifyAuth", authMiddleware, verifyAuth); // New route
 router.post("/logout", logout); // New route
 export default router;

@@ -15,6 +15,9 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    verified: { type: Boolean, default: false },
+    verificationCode: { type: String },
+    verificationExpires: { type: Date },
   },
   { timestamps: true }
 );
