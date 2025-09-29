@@ -41,17 +41,14 @@ const HomePage = () => {
 
             {/* Desktop Navigation */}
             <div className="flex items-center md:space-x-2 lg:space-x-8">
-              <Link to="/forums" className="btn-secondary">
-                Forums
-              </Link>
-              <Link to="/topics" className="btn-secondary">
-                Topics
-              </Link>
-              <Link to="/resources" className="btn-secondary">
-                Resources
-              </Link>
               <Link to="/about" className="btn-secondary">
                 About
+              </Link>
+              <Link to="/team" className="btn-secondary">
+                Team
+              </Link>
+              <Link to="/contact" className="btn-secondary">
+                Contact
               </Link>
             </div>
 
