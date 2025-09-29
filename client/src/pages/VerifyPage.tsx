@@ -1,7 +1,26 @@
 import myPhoto from "../assets/loginpage_icons/signup_left_image.png";
 import Logo from "../assets/homepage_icons/unisun_logo.png";
+import { useState, useRef } from "react";
 
 const VerifyPage = () => {
+  // const [valid, setValid] = useState(false);
+  const codeRef = useRef<HTMLInputElement>(null);
+  if (codeRef) {
+    console.log(codeRef);
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); //re rendering
+  };
+
+  //A way to handle the input of the auth code
+  //user enters the auth code, now check its valid with model
+  //you need a function to check for you
+  //if wrong - error shown,
+  //if correct - user validated and updates the record, then the user can log in
+  //A way to handle the submission of the auth code
+  //
+
   return (
     <div className="flex min-h-screen bg-white">
       {/* Left side image */}
@@ -51,6 +70,7 @@ const VerifyPage = () => {
                     type="text"
                     placeholder="Password"
                     className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded-md"
+                    ref={codeRef}
                   />
                 </div>
 

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { EyeClosed, Eye, Loader2, CheckCircle } from "lucide-react";
 import type { ChangeEvent } from "react";
 import myPhoto from "../assets/loginpage_icons/signup_left_image.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import api from "../lib/api";
 import Logo from "../assets/homepage_icons/unisun_logo.png";
 
@@ -325,34 +325,35 @@ const SignUpPage = () => {
               </div>
             </div>
           ) : (
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
-              <div className="bg-white py-8 px-6 shadow-lg sm:rounded-lg flex flex-col items-center justify-center">
-                {/* Lucide check circle icon */}
-                <CheckCircle
-                  className="text-green-500 w-16 h-16 mb-4"
-                  strokeWidth={2.5}
-                />
+            <Navigate to="/verify" replace />
+            // <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
+            //   <div className="bg-white py-8 px-6 shadow-lg sm:rounded-lg flex flex-col items-center justify-center">
+            //     {/* Lucide check circle icon */}
+            //     <CheckCircle
+            //       className="text-green-500 w-16 h-16 mb-4"
+            //       strokeWidth={2.5}
+            //     />
 
-                <h1 className="text-2xl font-bold m-4  text-center">
-                  Account Created
-                  <br />
-                  Successfully!
-                </h1>
-                <p className="text-gray-700 mb-6 text-center">
-                  Welcome aboard,{" "}
-                  <span className="font-semibold">{formData.name}</span>!<br />
-                  Your account has been created.
-                </p>
-                <div className="w-full flex justify-center text-center">
-                  <Link
-                    to="/verify"
-                    className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500]"
-                  >
-                    Continue
-                  </Link>
-                </div>
-              </div>
-            </div>
+            //     <h1 className="text-2xl font-bold m-4  text-center">
+            //       Account Created
+            //       <br />
+            //       Successfully!
+            //     </h1>
+            //     <p className="text-gray-700 mb-6 text-center">
+            //       Welcome aboard,{" "}
+            //       <span className="font-semibold">{formData.name}</span>!<br />
+            //       Your account has been created.
+            //     </p>
+            //     <div className="w-full flex justify-center text-center">
+            //       <Link
+            //         to="/verify"
+            //         className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500]"
+            //       >
+            //         Continue
+            //       </Link>
+            //     </div>
+            //   </div>
+            // </div>
           )}
         </div>
       </div>
