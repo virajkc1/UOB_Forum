@@ -1,7 +1,7 @@
 import User from "../models/User.Model";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { AuthRequest } from "../types/types";
 import { sendVerificationEmail } from "../api/brevo.api";
@@ -52,6 +52,19 @@ export const registerUser = async (req: Request, res: Response) => {
     });
 
     await newUser.save();
+    console.log("New user created:", newUser);
+
+    // Create a session cookie
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET!, {
+      expiresIn: "1h",
+    });
+    // assign the token to the cookie
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "development" ? false : true,
+      sameSite: process.env.NODE_ENV === "development" ? false : true,
+      maxAge: 30 * 60 * 1000, //TOKEN lasts for 30mins (add refresh tokens too)
+    });
 
     // ✅ Send the verification code via email using Brevo
     await sendVerificationEmail(newUser.email, newUser.name, verificationCode);
@@ -68,13 +81,20 @@ export const registerUser = async (req: Request, res: Response) => {
 
 export const verifyEmail = async (req: Request, res: Response) => {
   try {
-    const { email, code } = req.body;
+    const { code } = req.body;
+    const cookie = req.cookies.access_token; //gives me the cookie
+
+    //I have my cookie
+    const decoded = jwt.verify(cookie, process.env.JWT_SECRET!) as JwtPayload;
+    const userId = decoded.id;
+    const user = await User.findById(userId);
+
     //Email or Code are missing
-    if (!email || !code) {
+    if (!code) {
       return res.status(400).json({ message: "Email and code are missing" });
     }
     //No user found
-    const user = await User.findOne({ email }); //without await, you cant wait for response so you get a QUERY OBJECT - a pending database operation
+    // const user = await User.findOne({ email }); //without await, you cant wait for response so you get a QUERY OBJECT - a pending database operation
     if (!user) {
       return res.status(400).json({ message: "No User Found" });
     }
@@ -107,6 +127,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   try {
     //Get the request info
+    // res.clearCookie("access_token");
     const { email, password } = req.body;
     //Validation of input entries
     if (!email || !password) {
