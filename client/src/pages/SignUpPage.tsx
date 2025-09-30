@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { EyeClosed, Eye, Loader2, CheckCircle } from "lucide-react";
+import { EyeClosed, Eye, Loader2 } from "lucide-react";
 import type { ChangeEvent } from "react";
 import myPhoto from "../assets/loginpage_icons/signup_left_image.png";
 import { Link, useNavigate, Navigate } from "react-router-dom";

@@ -1,16 +1,56 @@
 import myPhoto from "../assets/loginpage_icons/signup_left_image.png";
 import Logo from "../assets/homepage_icons/unisun_logo.png";
-import { useState, useRef } from "react";
+import { useState, type ChangeEvent } from "react";
+import api from "@/lib/api"; //our axious
+import { useNavigate } from "react-router-dom";
 
 const VerifyPage = () => {
   // const [valid, setValid] = useState(false);
-  const codeRef = useRef<HTMLInputElement>(null);
-  if (codeRef) {
-    console.log(codeRef);
-  }
+  const [code, setCode] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [backendError, setBackendError] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setCode(e.target.value);
+    console.log(code);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); //re rendering
+    e.preventDefault(); //doesnt re render the page
+    if (isSubmitting) {
+      return;
+    }
+
+    if (!code) {
+      setBackendError("No code");
+
+      return;
+    }
+
+    const codeRegex = /^\d{6}$/;
+    if (!codeRegex.test(code)) {
+      setBackendError("Please enter a valid code");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const response = await api.post("/auth/verify", { code });
+      if (response.status === 200) {
+        console.log("success");
+        navigate("/login");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.data.message) {
+        setBackendError(error.response.data.message);
+      } else {
+        setBackendError("Verification failed. Please try again.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   //A way to handle the input of the auth code
@@ -70,14 +110,19 @@ const VerifyPage = () => {
                     type="text"
                     placeholder="Password"
                     className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded-md"
-                    ref={codeRef}
+                    onChange={handleChange}
                   />
                 </div>
 
                 <div className="pt-[10%]">
+                  {backendError && (
+                    <p className="text-red-500">{backendError}</p>
+                  )}
                   <button
                     type="submit"
                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
                   >
                     Verify Account
                   </button>
