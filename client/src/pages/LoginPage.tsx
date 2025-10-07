@@ -67,6 +67,7 @@ const LoginPage = () => {
 
     try {
       await login(formData.email, formData.password);
+
       // Login successful, redirect to dashboard
       navigate("/forum");
     } catch (error: any) {

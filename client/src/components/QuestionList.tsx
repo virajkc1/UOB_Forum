@@ -1,5 +1,6 @@
 import React from "react";
 
+//Defining the Question Interface (Type Definition)
 interface Question {
   _id: string;
   title: string;
@@ -11,6 +12,7 @@ interface Question {
   answers: any[];
 }
 
+//Defines the props it recieved from the parent
 interface QuestionListProps {
   questions: Question[];
   isLoading: boolean;
@@ -72,7 +74,9 @@ const QuestionList: React.FC<QuestionListProps> = ({
 
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4 text-sm text-gray-500">
-              <span>By {question.author.name}</span>
+              <span>
+                By {question.author ? question.author.name : "Unknown"}
+              </span>
               <span>•</span>
               <span>{question.votes} votes</span>
               <span>•</span>

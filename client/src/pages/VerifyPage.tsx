@@ -9,6 +9,7 @@ const VerifyPage = () => {
   const [code, setCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [backendError, setBackendError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (
@@ -40,8 +41,8 @@ const VerifyPage = () => {
       const response = await api.post("/auth/verify", { code });
       if (response.status === 200) {
         console.log("success");
-        navigate("/login");
       }
+      setSubmitted(true);
     } catch (error: any) {
       if (error.response && error.response.data.message) {
         setBackendError(error.response.data.message);
@@ -71,67 +72,105 @@ const VerifyPage = () => {
           className="block w-[80vh] h-[80vh] object-cover border-0 select-none"
         />
       </div>
-      <div className="flex flex-col flex-1 justify-center py-12 px-6">
-        <div className="max-w-md w-full mx-auto">
-          <div className="flex justify-center">
-            <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center">
-              <img src={Logo} alt="Logo" />
+      {!submitted ? (
+        <div className="flex flex-col flex-1 justify-center py-12 px-6">
+          <div className="max-w-md w-full mx-auto">
+            <div className="flex justify-center">
+              <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center">
+                <img src={Logo} alt="Logo" />
+              </div>
             </div>
-          </div>
-          <div className="mx-auto w-full max-w-md">
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Verify your email address
-            </h2>
-          </div>
-          <div className="mt-10 mx-auto w-full max-w-md">
-            <div className="bg-white py-8 px-6 shadow-lg rounded-lg">
-              <form className="space-y-5">
-                {/* Full Name Field */}
-                <div className="text-center relative w-full flex flex-col max-w-sm pt-[10%] gap-8 pb-[10%]">
-                  <p className="text-gray-700 text-md align-center">
-                    We have sent a verification email to the registered email
-                  </p>
-                  <div className="gap-">
-                    <p className="text-gray-700 pb-2 text-md align-center">
-                      Enter the code
-                    </p>
+            <div className="mx-auto w-full max-w-md">
+              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Verify your email address
+              </h2>
+            </div>
+            <div className="mt-10 mx-auto w-full max-w-md">
+              <div className="bg-white py-8 px-6 shadow-lg rounded-lg">
+                <form className="space-y-5">
+                  {/* Full Name Field */}
+                  <div className="text-center relative w-full flex flex-col max-w-sm pt-[10%] gap-8 pb-[10%]">
                     <p className="text-gray-700 text-md align-center">
-                      You may need to
-                      <span className="font-bold"> check your spam folder</span>
+                      We have sent a verification email to the registered email
                     </p>
+                    <div className="gap-">
+                      <p className="text-gray-700 pb-2 text-md align-center">
+                        Enter the code
+                      </p>
+                      <p className="text-gray-700 text-md align-center">
+                        You may need to
+                        <span className="font-bold">
+                          {" "}
+                          check your spam folder
+                        </span>
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Password */}
-                <div className="relative w-full max-w-sm">
-                  <input
-                    id="verification_code"
-                    name="verification_code"
-                    type="text"
-                    placeholder="Password"
-                    className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded-md"
-                    onChange={handleChange}
-                  />
-                </div>
+                  {/* Password */}
+                  <div className="relative w-full max-w-sm">
+                    <input
+                      id="verification_code"
+                      name="verification_code"
+                      type="text"
+                      placeholder="Password"
+                      className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded-md"
+                      onChange={handleChange}
+                    />
+                  </div>
 
-                <div className="pt-[10%]">
-                  {backendError && (
-                    <p className="text-red-500">{backendError}</p>
-                  )}
-                  <button
-                    type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    onClick={handleSubmit}
-                    disabled={isSubmitting}
-                  >
-                    Verify Account
-                  </button>
-                </div>
-              </form>
+                  <div className="pt-[10%]">
+                    {backendError && (
+                      <p className="text-red-500">{backendError}</p>
+                    )}
+                    <button
+                      type="submit"
+                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      onClick={handleSubmit}
+                      disabled={isSubmitting}
+                    >
+                      Verify Account
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-col flex-1 justify-center py-12 px-6">
+          <div className="max-w-md w-full mx-auto">
+            <div className="flex justify-center">
+              <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center">
+                <img src={Logo} alt="Logo" />
+              </div>
+            </div>
+            <div className="mx-auto w-full max-w-md">
+              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Email Verified !
+              </h2>
+            </div>
+            <div className=" mx-auto w-full max-w-md">
+              <div className="bg-white h-48 py-8 px-6 shadow-lg rounded-lg gap">
+                <form className="flex flex-col justify-between gap-10">
+                  <p className="pt-5 text-center text-gray-600 ">
+                    {" "}
+                    Your email was successfully verified
+                  </p>
+
+                  <button
+                    type="submit"
+                    className="w-full justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#ff4900] hover:bg-[#e64500] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    onClick={() => navigate("/login")}
+                  >
+                    Login
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const response = await api.get("/auth/verify");
+      const response = await api.get("/auth/verifyAuth");
       if (response.status === 200) {
         setUser(response.data.user);
         setIsAuthenticated(true);
