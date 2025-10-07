@@ -62,7 +62,7 @@ export const getAllQuestions = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
+//testing
 // Get only the current user's questions
 export const getUserQuestions = async (req: AuthRequest, res: Response) => {
   try {
