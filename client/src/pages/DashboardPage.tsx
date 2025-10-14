@@ -4,6 +4,15 @@ import QuestionForm from "../components/QuestionForm";
 import QuestionList from "../components/QuestionList";
 import api from "../lib/api";
 import { Link, Navigate } from "react-router-dom";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/ui/app-sidebar";
 
 interface Question {
   _id: string;
@@ -17,7 +26,7 @@ interface Question {
 }
 
 const DashboardPage = () => {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const { isAuthenticated, isLoading, logout } = useAuth();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [error, setError] = useState("");
@@ -67,52 +76,63 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-              <p className="text-gray-600">Welcome back, {user?.name}!</p>
+      {/* Header - Fixed Navbar */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b h-16">
+        <NavigationMenu className="flex justify-center items-center min-w-full h-full">
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <Button variant="outline">Logo</Button>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+
+          <Input placeholder="Search" className="max-w-sm" />
+          <Button variant="outline" onClick={handleLogout}>
+            Logout
+          </Button>
+        </NavigationMenu>
+      </header>
+
+      {/* Main Content Area with Sidebar */}
+      <div className="pt-16">
+        <SidebarProvider>
+          <AppSidebar />
+          <main className="flex-1 w-full">
+            <SidebarTrigger className="m-4" />
+
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                  {error}
+                </div>
+              )}
+
+              {/* Question Form */}
+              <QuestionForm onQuestionCreated={handleQuestionCreated} />
+
+              {/* Main Forum Link */}
+              <div className="flex justify-end mb-6">
+                <Link
+                  to="/main-forum"
+                  className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  View Main Forum
+                </Link>
+              </div>
+
+              {/* Questions List */}
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                  Your Questions
+                </h2>
+                <QuestionList
+                  questions={questions}
+                  isLoading={isLoadingQuestions}
+                />
+              </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            {error}
-          </div>
-        )}
-
-        {/* Question Form */}
-        <QuestionForm onQuestionCreated={handleQuestionCreated} />
-
-        {/* Main Forum Link */}
-        <div className="flex justify-end mb-6">
-          <Link
-            to="/main-forum"
-            className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            View Main Forum
-          </Link>
-        </div>
-
-        {/* Questions List */}
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            Your Questions
-          </h2>
-          <QuestionList questions={questions} isLoading={isLoadingQuestions} />
-        </div>
+          </main>
+        </SidebarProvider>
       </div>
     </div>
   );
