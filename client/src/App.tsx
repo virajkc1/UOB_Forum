@@ -6,9 +6,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import VerifyPage from "./pages/VerifyPage";
 import DashboardPage from "./pages/DashboardPage";
-import { AboutPage } from "./AboutPage";
-import { TeamPage } from "./TeamPage";
-import { ContactPage } from "./ContactPage";
+import AboutPage from "./pages/AboutPage";
+import TeamPage from "./pages/TeamPage";
+import ContactPage from "./pages/ContactPage";
 
 function App() {
   return (

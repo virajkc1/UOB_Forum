@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Menu, X, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { Instagram, Twitter, Linkedin } from "lucide-react";
 import { useState } from "react";
-import Logo from "./assets/homepage_icons/unisun_logo.png";
+import Logo from "../assets/homepage_icons/unisun_logo.png";
 
 export const ContactPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -527,3 +527,5 @@ export const ContactPage = () => {
     </div>
   );
 };
+
+export default ContactPage;

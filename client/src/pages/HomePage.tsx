@@ -194,7 +194,7 @@ const HomePage = () => {
             {/* Card 2 */}
             <div className="w-[85%] md:w-[350px] h-[200px] md:min-h-[300px] flex flex-col justify-center items-center tile-background rounded-3xl shadow-xl hover:shadow-2xl hover:scale-105 duration-300">
               <h2 className="text-white text-xl md:text-2xl font-bold mb-8 md:mb-10">
-                Ask Quetions
+                Ask Questions
               </h2>
               <p className="text-gray-50 text-center px-6">
                 Ask questions to the community and get answers

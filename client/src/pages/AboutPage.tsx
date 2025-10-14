@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Instagram, Twitter, Linkedin } from "lucide-react";
 import { useState } from "react";
-import Logo from "./assets/homepage_icons/unisun_logo.png";
+import Logo from "../assets/homepage_icons/unisun_logo.png";
 
 export const AboutPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -568,3 +568,4 @@ export const AboutPage = () => {
     </div>
   );
 };
+export default AboutPage;

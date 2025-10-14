@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Menu, X, Github, Mail } from "lucide-react";
 import { Instagram, Twitter, Linkedin } from "lucide-react";
 import { useState } from "react";
-import Logo from "./assets/homepage_icons/unisun_logo.png";
+import Logo from "../assets/homepage_icons/unisun_logo.png";
 
 export const TeamPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -439,3 +439,5 @@ export const TeamPage = () => {
     </div>
   );
 };
+
+export default TeamPage;
