@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import QuestionForm from "../components/QuestionForm";
 import QuestionList from "../components/QuestionList";
@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import * as Dialog from "@radix-ui/react-dialog"; //namespace import -
+import { X } from "lucide-react";
 interface Question {
   _id: string;
   title: string;
@@ -30,10 +31,41 @@ const DashboardPage = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [error, setError] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
-    text: "",
+    content: "",
+    tags: "",
   });
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    //state settler function
+    //checks if their is a change or not
+    //prevent default behaviour
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+      //dynamic key hence [] needed
+    });
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!isSubmitting) {
+      setIsSubmitting(true);
+    }
+    try {
+      const response = await api.post("/question", formData);
+      //endpoint you are sending api call to so its a post api request, so we are sending data to this API post, formData is the data we are submtting
+      setIsSubmitting(false);
+      console.log(response);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -155,15 +187,19 @@ const DashboardPage = () => {
               {/* The trigger is the button of the dialog */}
               <Dialog.Portal>
                 {/* Sends dialog cotnent to end of the body (so everything in the body is behind when clicked) */}
-                <Dialog.Overlay className="inset fixed bg-black" />
+                <Dialog.Overlay
+                  className="inset-0 fixed bg-gray-400 opacity-50"
+                  onClick={() => setIsOpen(false)}
+                />
                 {/* This is the dark background at the back  */}
                 <Dialog.Content className="fixed left-1/2 top-[20%] rounded-xl shadow-md -translate-1/2 tran w-[400px] bg-white  min-h-[500px]">
                   <div>
-                    <div className="flex pr-8 pt-5 max-w-full flex-row justify-end">
-                      <h1 className="pt-4 font- text-3xl">X</h1>
-                    </div>
+                    <div className="flex pr-8 pt-5 max-w-full flex-row justify-end"></div>
                     <div>
-                      <form className="w-[80%] mx-auto mt-3 justify-center">
+                      <form
+                        onSubmit={handleSubmit}
+                        className="w-[80%] mx-auto mt-3 justify-center"
+                      >
                         <div className="flex justify-center flex-row">
                           <h3 className="font-semibold text-2xl">
                             Post a Question
@@ -171,20 +207,43 @@ const DashboardPage = () => {
                         </div>
 
                         <h3 className="font-normal pt-3">Title</h3>
-                        <input className="bg-white min-w-full border-2 rounded-md pt-1"></input>
+                        <input
+                          className="bg-white min-w-full border-2 rounded-md pt-1 px-3"
+                          id="title"
+                          name="title"
+                          type="text"
+                          onChange={handleChange}
+                          value={formData.title}
+                          autoFocus
+                          placeholder="Enter your question title..."
+                        />
                         <h3 className="font-normal pt-3">Body</h3>
-                        <input className="bg-white min-w-full border-2 rounded-md pt-1 pb-20"></input>
+                        <textarea
+                          className="bg-white min-w-full border-2 rounded-md pt-1 px-3 pb-20 resize-none"
+                          id="content"
+                          name="content"
+                          rows={6}
+                          onChange={handleChange}
+                          value={formData.content}
+                        />
                         <div className="justify-end pt-10 gap-10 flex ">
                           <button className="bg-white border-2 hover:shadow-md p-5  rounded-xl">
                             <p>Cancel</p>
                           </button>
-                          <button className="bg-blue-600  p-5 rounded-xl hover:shadow-md">
+                          <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="bg-blue-600  p-5 rounded-xl hover:shadow-md"
+                          >
                             <p className="text-white">Submit</p>
                           </button>
                         </div>
                       </form>
                     </div>
                   </div>
+                  <Dialog.Close>
+                    <X className="h-6 w-6 absolute top-4 right-4" />
+                  </Dialog.Close>
 
                   {/* This is the actual box that pops up on click */}
                   <Dialog.Title />
