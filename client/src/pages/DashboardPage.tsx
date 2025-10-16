@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
-
+import * as Dialog from "@radix-ui/react-dialog"; //namespace import -
 interface Question {
   _id: string;
   title: string;
@@ -30,6 +30,10 @@ const DashboardPage = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    text: "",
+  });
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -78,15 +82,18 @@ const DashboardPage = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header - Fixed Navbar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b h-16">
-        <NavigationMenu className="flex justify-center items-center min-w-full h-full">
+        <NavigationMenu
+          value="test"
+          className="flex justify-between items-center min-w-full h-full mx-auto"
+        >
           <NavigationMenuList>
-            <NavigationMenuItem>
+            <NavigationMenuItem className="ml-10">
               <Button variant="outline">Logo</Button>
             </NavigationMenuItem>
           </NavigationMenuList>
 
           <Input placeholder="Search" className="max-w-sm" />
-          <Button variant="outline" onClick={handleLogout}>
+          <Button variant="outline" onClick={handleLogout} className="mr-10">
             Logout
           </Button>
         </NavigationMenu>
@@ -96,11 +103,14 @@ const DashboardPage = () => {
       <div className="pt-16">
         <SidebarProvider>
           <AppSidebar />
-          <main className="flex-1 w-full">
-            <SidebarTrigger className="m-4" />
+          <main className="max-h-screen">
+            <SidebarTrigger
+              className="m-4 [&[data-disabled=true]_svg]:hidden"
+              disabled
+            />
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {error && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
                   {error}
@@ -108,20 +118,20 @@ const DashboardPage = () => {
               )}
 
               {/* Question Form */}
-              <QuestionForm onQuestionCreated={handleQuestionCreated} />
+            {/* <QuestionForm onQuestionCreated={handleQuestionCreated} /> */}
 
-              {/* Main Forum Link */}
-              <div className="flex justify-end mb-6">
+            {/* Main Forum Link */}
+            {/* <div className="flex justify-end mb-6">
                 <Link
                   to="/main-forum"
                   className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   View Main Forum
                 </Link>
-              </div>
+              </div> */}
 
-              {/* Questions List */}
-              <div className="mt-8">
+            {/* Questions List */}
+            {/* <div className="mt-8">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">
                   Your Questions
                 </h2>
@@ -129,8 +139,63 @@ const DashboardPage = () => {
                   questions={questions}
                   isLoading={isLoadingQuestions}
                 />
-              </div>
-            </div>
+              </div> */}
+            {/* </div>  */}
+            <Dialog.Root>
+              {/* The root is the wrapper for the dialog ONLY */}
+
+              <Dialog.Trigger asChild>
+                {/* The trigger is the button of the dialog */}
+                <div className="flex min-w-full mx-auto justify-end">
+                  <Button className="bg-white border-2 hover:shadow-md p-5 rounded-xl text-black">
+                    Create a Question
+                  </Button>
+                </div>
+              </Dialog.Trigger>
+              {/* The trigger is the button of the dialog */}
+              <Dialog.Portal>
+                {/* Sends dialog cotnent to end of the body (so everything in the body is behind when clicked) */}
+                <Dialog.Overlay className="inset fixed bg-black" />
+                {/* This is the dark background at the back  */}
+                <Dialog.Content className="fixed left-1/2 top-[20%] rounded-xl shadow-md -translate-1/2 tran w-[400px] bg-white  min-h-[500px]">
+                  <div>
+                    <div className="flex pr-8 pt-5 max-w-full flex-row justify-end">
+                      <h1 className="pt-4 font- text-3xl">X</h1>
+                    </div>
+                    <div>
+                      <form className="w-[80%] mx-auto mt-3 justify-center">
+                        <div className="flex justify-center flex-row">
+                          <h3 className="font-semibold text-2xl">
+                            Post a Question
+                          </h3>
+                        </div>
+
+                        <h3 className="font-normal pt-3">Title</h3>
+                        <input className="bg-white min-w-full border-2 rounded-md pt-1"></input>
+                        <h3 className="font-normal pt-3">Body</h3>
+                        <input className="bg-white min-w-full border-2 rounded-md pt-1 pb-20"></input>
+                        <div className="justify-end pt-10 gap-10 flex ">
+                          <button className="bg-white border-2 hover:shadow-md p-5  rounded-xl">
+                            <p>Cancel</p>
+                          </button>
+                          <button className="bg-blue-600  p-5 rounded-xl hover:shadow-md">
+                            <p className="text-white">Submit</p>
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  {/* This is the actual box that pops up on click */}
+                  <Dialog.Title />
+                  {/* Main title for accessiblity */}
+                  <Dialog.Description />
+                  {/* Extra info too for screen readers */}
+                  <Dialog.Close />
+                  {/* the button to close the dialog */}
+                </Dialog.Content>
+              </Dialog.Portal>
+            </Dialog.Root>
           </main>
         </SidebarProvider>
       </div>
