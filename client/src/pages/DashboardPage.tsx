@@ -111,7 +111,7 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen min-w-full bg-gray-50">
       {/* Header - Fixed Navbar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b h-16">
         <NavigationMenu
@@ -132,57 +132,24 @@ const DashboardPage = () => {
       </header>
 
       {/* Main Content Area with Sidebar */}
-      <div className="pt-16">
-        <SidebarProvider>
-          <AppSidebar />
-          <main className="max-h-screen">
-            <SidebarTrigger
-              className="m-4 [&[data-disabled=true]_svg]:hidden"
-              disabled
-            />
+      <div className="pt-16 min-w-full ">
+        {/* <SidebarProvider> */}
+        {/* <AppSidebar /> */}
+        <main className="max-h-screen min-w-full">
+          {/* <SidebarTrigger
+            className="m-4 [&[data-disabled=true]_svg]:hidden"
+            disabled
+          /> */}
 
-            {/* Main Content */}
-            {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              {error && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                  {error}
-                </div>
-              )}
+          {/* Main Content */}
 
-              {/* Question Form */}
-            {/* <QuestionForm onQuestionCreated={handleQuestionCreated} /> */}
-
-            {/* Main Forum Link */}
-            {/* <div className="flex justify-end mb-6">
-                <Link
-                  to="/main-forum"
-                  className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  View Main Forum
-                </Link>
-              </div> */}
-
-            {/* Questions List */}
-            {/* <div className="mt-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  Your Questions
-                </h2>
-                <QuestionList
-                  questions={questions}
-                  isLoading={isLoadingQuestions}
-                />
-              </div> */}
-            {/* </div>  */}
-            <Dialog.Root>
-              {/* The root is the wrapper for the dialog ONLY */}
-
+          {/* Create Question Button */}
+          <div className="mb-6">
+            <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
               <Dialog.Trigger asChild>
-                {/* The trigger is the button of the dialog */}
-                <div className="flex min-w-full mx-auto justify-end">
-                  <Button className="bg-white border-2 hover:shadow-md p-5 rounded-xl text-black">
-                    Create a Question
-                  </Button>
-                </div>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">
+                  Create a Question
+                </Button>
               </Dialog.Trigger>
               {/* The trigger is the button of the dialog */}
               <Dialog.Portal>
@@ -255,8 +222,63 @@ const DashboardPage = () => {
                 </Dialog.Content>
               </Dialog.Portal>
             </Dialog.Root>
-          </main>
-        </SidebarProvider>
+            {/* Forum Post Design */}
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-white rounded-xl shadow-sm border p-6">
+                {/* Header Section */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+                    <div>
+                      <h3 className="font-medium text-gray-900">
+                        Viraj Chapaneri
+                      </h3>
+                      <p className="text-sm text-gray-500">5 Months Ago</p>
+                    </div>
+                  </div>
+                  <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    Year 3
+                  </div>
+                </div>
+
+                {/* Question Content */}
+                <div className="mb-4">
+                  <h2 className="text-xl font-bold text-gray-900 mb-2">
+                    Why did my answer give 3,121 for PDA but truman said its
+                    27812 Today?
+                  </h2>
+                  <p className="text-gray-700">
+                    Today i am listening to a new newn new girl who is hig
+                    adfjksldfjkdlflds dfkjfskl dfkds fjdslkfjdslf dsflkdjf
+                  </p>
+                </div>
+
+                {/* Attachments Section */}
+                <div className="flex space-x-2 mb-4">
+                  <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <div className="w-6 h-6 bg-gray-400 rounded"></div>
+                  </div>
+                  <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <div className="w-6 h-6 bg-gray-400 rounded"></div>
+                  </div>
+                  <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <div className="w-6 h-6 bg-gray-400 rounded"></div>
+                  </div>
+                </div>
+
+                {/* Comment Input */}
+                <div className="border-t pt-4">
+                  <input
+                    type="text"
+                    placeholder="What are your thoughts..."
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        {/* </SidebarProvider> */}
       </div>
     </div>
   );
