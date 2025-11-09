@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import QuestionForm from "../components/QuestionForm";
 import QuestionList from "../components/QuestionList";
 import api from "../lib/api";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -15,6 +15,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import * as Dialog from "@radix-ui/react-dialog"; //namespace import -
 import { X } from "lucide-react";
+import QuestionCard from "../components/dashboard_ui/QuestionCard";
 interface Question {
   _id: string;
   title: string;
@@ -38,6 +39,12 @@ const DashboardPage = () => {
     content: "",
     tags: "",
   });
+
+  const navigate = useNavigate();
+  /* 
+  Web Hook into components - can switch route w/o reloading browser
+  Pros - App is fast, no full reload wont lose app state eg: form / data / scroll position
+  */
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -111,8 +118,12 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen min-w-full bg-gray-50">
-      {/* Header - Fixed Navbar */}
+    <div className="min-h-screen min-w-full flex flex-col bg-gray-50">
+      {/* Splitting the main wrapper into 2 div blocks */}
+      {/* Top Navigation */}
+      {/* Main Body */}
+
+      {/* Header - Fixed Navbar - Logo, Searchbar, Logout & Avator */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b h-16">
         <NavigationMenu
           value="test"
@@ -125,160 +136,113 @@ const DashboardPage = () => {
           </NavigationMenuList>
 
           <Input placeholder="Search" className="max-w-sm" />
-          <Button variant="outline" onClick={handleLogout} className="mr-10">
-            Logout
-          </Button>
+          <div className="flex gap-5">
+            <Button variant="outline" onClick={handleLogout} className="">
+              Logout
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/profile")}
+              className="mr-10"
+            >
+              Profile
+            </Button>
+          </div>
         </NavigationMenu>
       </header>
 
       {/* Main Content Area with Sidebar */}
-      <div className="pt-16 min-w-full ">
-        {/* <SidebarProvider> */}
-        {/* <AppSidebar /> */}
-        <main className="max-h-screen min-w-full">
-          {/* <SidebarTrigger
-            className="m-4 [&[data-disabled=true]_svg]:hidden"
-            disabled
-          /> */}
+      {/* Sidebar - Navigation Menu
 
-          {/* Main Content */}
+      1. Home - Home Page
+      2. Collections - Collections Page
+      3. Profile - Profile Page
+      4. People - People Page
+      5. Help - Help Page
 
-          {/* Create Question Button */}
-          <div className="mb-6">
-            <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-              <Dialog.Trigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">
-                  Create a Question
-                </Button>
-              </Dialog.Trigger>
-              {/* The trigger is the button of the dialog */}
-              <Dialog.Portal>
-                {/* Sends dialog cotnent to end of the body (so everything in the body is behind when clicked) */}
-                <Dialog.Overlay
-                  className="inset-0 fixed bg-gray-400 opacity-50"
-                  onClick={() => setIsOpen(false)}
-                />
-                {/* This is the dark background at the back  */}
-                <Dialog.Content className="fixed left-1/2 top-[20%] rounded-xl shadow-md -translate-1/2 tran w-[400px] bg-white  min-h-[500px]">
-                  <div>
-                    <div className="flex pr-8 pt-5 max-w-full flex-row justify-end"></div>
-                    <div>
-                      <form
-                        onSubmit={handleSubmit}
-                        className="w-[80%] mx-auto mt-3 justify-center"
-                      >
-                        <div className="flex justify-center flex-row">
-                          <h3 className="font-semibold text-2xl">
-                            Post a Question
-                          </h3>
-                        </div>
 
-                        <h3 className="font-normal pt-3">Title</h3>
-                        <input
-                          className="bg-white min-w-full border-2 rounded-md pt-1 px-3"
-                          id="title"
-                          name="title"
-                          type="text"
-                          onChange={handleChange}
-                          value={formData.title}
-                          autoFocus
-                          placeholder="Enter your question title..."
-                        />
-                        <h3 className="font-normal pt-3">Body</h3>
-                        <textarea
-                          className="bg-white min-w-full border-2 rounded-md pt-1 px-3 pb-20 resize-none"
-                          id="content"
-                          name="content"
-                          rows={6}
-                          onChange={handleChange}
-                          value={formData.content}
-                        />
-                        <div className="justify-end pt-10 gap-10 flex ">
-                          <button className="bg-white border-2 hover:shadow-md p-5  rounded-xl">
-                            <p>Cancel</p>
-                          </button>
-                          <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="bg-blue-600  p-5 rounded-xl hover:shadow-md"
-                          >
-                            <p className="text-white">Submit</p>
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                  <Dialog.Close>
-                    <X className="h-6 w-6 absolute top-4 right-4" />
-                  </Dialog.Close>
-
-                  {/* This is the actual box that pops up on click */}
-                  <Dialog.Title />
-                  {/* Main title for accessiblity */}
-                  <Dialog.Description />
-                  {/* Extra info too for screen readers */}
-                  <Dialog.Close />
-                  {/* the button to close the dialog */}
-                </Dialog.Content>
-              </Dialog.Portal>
-            </Dialog.Root>
-            {/* Forum Post Design */}
-            <div className="max-w-2xl mx-auto">
-              <div className="bg-white rounded-xl shadow-sm border p-6">
-                {/* Header Section */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
-                    <div>
-                      <h3 className="font-medium text-gray-900">
-                        Viraj Chapaneri
-                      </h3>
-                      <p className="text-sm text-gray-500">5 Months Ago</p>
-                    </div>
-                  </div>
-                  <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    Year 3
-                  </div>
-                </div>
-
-                {/* Question Content */}
-                <div className="mb-4">
-                  <h2 className="text-xl font-bold text-gray-900 mb-2">
-                    Why did my answer give 3,121 for PDA but truman said its
-                    27812 Today?
-                  </h2>
-                  <p className="text-gray-700">
-                    Today i am listening to a new newn new girl who is hig
-                    adfjksldfjkdlflds dfkjfskl dfkds fjdslkfjdslf dsflkdjf
-                  </p>
-                </div>
-
-                {/* Attachments Section */}
-                <div className="flex space-x-2 mb-4">
-                  <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <div className="w-6 h-6 bg-gray-400 rounded"></div>
-                  </div>
-                  <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <div className="w-6 h-6 bg-gray-400 rounded"></div>
-                  </div>
-                  <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <div className="w-6 h-6 bg-gray-400 rounded"></div>
-                  </div>
-                </div>
-
-                {/* Comment Input */}
-                <div className="border-t pt-4">
-                  <input
-                    type="text"
-                    placeholder="What are your thoughts..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
+      */}
+      <div className="flex flex-1 pt-16">
+        <aside className="w-52 fixed top-16 left-0 h-[calc(100vh-4rem)] border-r bg-white border-gray-300">
+          {/* fixed-keeps same position, top-16 - gap from main bar
+          height and width is fixed height calculated 
+          */}
+          <nav className="flex flex-col p-4 h-full">
+            <div className="gap-5 flex flex-col">
+              <Button
+                variant="ghost"
+                className="justify-start min-w-full"
+                onClick={() => navigate("/")}
+              >
+                Home
+              </Button>
+              <Button
+                variant="ghost"
+                className="justify-start min-w-full hover:bg-gray-100"
+                onClick={() => navigate("/collections")}
+              >
+                Collections
+              </Button>
+              <Button
+                variant="ghost"
+                className="justify-start hover:bg-gray-100"
+                onClick={() => navigate("/profile")}
+              >
+                My Profile
+              </Button>
+              <Button
+                variant="ghost"
+                className="justify-start hover:bg-gray-100"
+                onClick={() => navigate("/people")}
+              >
+                People
+              </Button>
             </div>
+            <div className="mt-auto">
+              <Button
+                variant="ghost"
+                className="mt-auto justify-start hover:bg-gray-100 min-w-full mb-5"
+                onClick={() => navigate("/help")}
+              >
+                Help
+              </Button>
+            </div>
+          </nav>
+        </aside>
+        <main className="flex-1 overflow-auto px-8 py-6 ml-52 min-h-screen">
+          {/* Filter / Sort by features
+          
+          This is just testing purposes right now for layout
+          Maps over each element in the array
+          Creates span element 
+          
+          */}
+          <div className="flex flex-col gap-2 border-b border-gray-300 pb-2 mb-6">
+            <div></div>
+            <h1 className="text-xl font-bold">University of Birmingham</h1>
+            <h2 className="text-md text-gray-700 font-medium">
+              Chemical Engineering
+            </h2>
           </div>
+          <div className="flex justify-between items-center mb-6">
+            <Button variant="outline">Filter/Sort by</Button>
+            <Button
+              variant="outline"
+              className="bg-blue-500 rounded-xl text-white font-bold hover:shadow-md hover:bg-blue-100"
+            >
+              Create a Post
+            </Button>
+          </div>
+          {/* This creates the Question Card 
+          
+          Needs to go through the database
+          Finds each question in chronological order
+          Finds the parameters - async needed
+
+          
+          */}
+          <div className="justify-between w-full max-w-4xl flex-1 mx-auto px-8 py-6 gap-10 flex flex-col"></div>
         </main>
-        {/* </SidebarProvider> */}
       </div>
     </div>
   );
