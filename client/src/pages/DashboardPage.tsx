@@ -1,10 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import QuestionForm from "../components/QuestionForm";
 import QuestionList from "../components/QuestionList";
 import api from "../lib/api";
-import { Link, Navigate } from "react-router-dom";
-
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/ui/app-sidebar";
+import * as Dialog from "@radix-ui/react-dialog"; //namespace import -
+import { X } from "lucide-react";
+import QuestionCard from "../components/dashboard_ui/QuestionCard";
 interface Question {
   _id: string;
   title: string;
@@ -17,10 +28,51 @@ interface Question {
 }
 
 const DashboardPage = () => {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const { isAuthenticated, isLoading, logout } = useAuth();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [error, setError] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    tags: "",
+  });
+
+  const navigate = useNavigate();
+  /* 
+  Web Hook into components - can switch route w/o reloading browser
+  Pros - App is fast, no full reload wont lose app state eg: form / data / scroll position
+  */
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    //state settler function
+    //checks if their is a change or not
+    //prevent default behaviour
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+      //dynamic key hence [] needed
+    });
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!isSubmitting) {
+      setIsSubmitting(true);
+    }
+    try {
+      const response = await api.post("/question", formData);
+      //endpoint you are sending api call to so its a post api request, so we are sending data to this API post, formData is the data we are submtting
+      setIsSubmitting(false);
+      console.log(response);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -66,53 +118,131 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-              <p className="text-gray-600">Welcome back, {user?.name}!</p>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
+    <div className="min-h-screen min-w-full flex flex-col bg-gray-50">
+      {/* Splitting the main wrapper into 2 div blocks */}
+      {/* Top Navigation */}
+      {/* Main Body */}
+
+      {/* Header - Fixed Navbar - Logo, Searchbar, Logout & Avator */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b h-16">
+        <NavigationMenu
+          value="test"
+          className="flex justify-between items-center min-w-full h-full mx-auto"
+        >
+          <NavigationMenuList>
+            <NavigationMenuItem className="ml-10">
+              <Button variant="outline">Logo</Button>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+
+          <Input placeholder="Search" className="max-w-sm" />
+          <div className="flex gap-5">
+            <Button variant="outline" onClick={handleLogout} className="">
               Logout
-            </button>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/profile")}
+              className="mr-10"
+            >
+              Profile
+            </Button>
           </div>
-        </div>
-      </div>
+        </NavigationMenu>
+      </header>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            {error}
+      {/* Main Content Area with Sidebar */}
+      {/* Sidebar - Navigation Menu
+
+      1. Home - Home Page
+      2. Collections - Collections Page
+      3. Profile - Profile Page
+      4. People - People Page
+      5. Help - Help Page
+
+
+      */}
+      <div className="flex flex-1 pt-16">
+        <aside className="w-52 fixed top-16 left-0 h-[calc(100vh-4rem)] border-r bg-white border-gray-300">
+          {/* fixed-keeps same position, top-16 - gap from main bar
+          height and width is fixed height calculated 
+          */}
+          <nav className="flex flex-col p-4 h-full">
+            <div className="gap-5 flex flex-col">
+              <Button
+                variant="ghost"
+                className="justify-start min-w-full"
+                onClick={() => navigate("/")}
+              >
+                Home
+              </Button>
+              <Button
+                variant="ghost"
+                className="justify-start min-w-full hover:bg-gray-100"
+                onClick={() => navigate("/collections")}
+              >
+                Collections
+              </Button>
+              <Button
+                variant="ghost"
+                className="justify-start hover:bg-gray-100"
+                onClick={() => navigate("/profile")}
+              >
+                My Profile
+              </Button>
+              <Button
+                variant="ghost"
+                className="justify-start hover:bg-gray-100"
+                onClick={() => navigate("/people")}
+              >
+                People
+              </Button>
+            </div>
+            <div className="mt-auto">
+              <Button
+                variant="ghost"
+                className="mt-auto justify-start hover:bg-gray-100 min-w-full mb-5"
+                onClick={() => navigate("/help")}
+              >
+                Help
+              </Button>
+            </div>
+          </nav>
+        </aside>
+        <main className="flex-1 overflow-auto px-8 py-6 ml-52 min-h-screen">
+          {/* Filter / Sort by features
+          
+          This is just testing purposes right now for layout
+          Maps over each element in the array
+          Creates span element 
+          
+          */}
+          <div className="flex flex-col gap-2 border-b border-gray-300 pb-2 mb-6">
+            <div></div>
+            <h1 className="text-xl font-bold">University of Birmingham</h1>
+            <h2 className="text-md text-gray-700 font-medium">
+              Chemical Engineering
+            </h2>
           </div>
-        )}
+          <div className="flex justify-between items-center mb-6">
+            <Button variant="outline">Filter/Sort by</Button>
+            <Button
+              variant="outline"
+              className="bg-blue-500 rounded-xl text-white font-bold hover:shadow-md hover:bg-blue-100"
+            >
+              Create a Post
+            </Button>
+          </div>
+          {/* This creates the Question Card 
+          
+          Needs to go through the database
+          Finds each question in chronological order
+          Finds the parameters - async needed
 
-        {/* Question Form */}
-        <QuestionForm onQuestionCreated={handleQuestionCreated} />
-
-        {/* Main Forum Link */}
-        <div className="flex justify-end mb-6">
-          <Link
-            to="/main-forum"
-            className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            View Main Forum
-          </Link>
-        </div>
-
-        {/* Questions List */}
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            Your Questions
-          </h2>
-          <QuestionList questions={questions} isLoading={isLoadingQuestions} />
-        </div>
+          
+          */}
+          <div className="justify-between w-full max-w-4xl flex-1 mx-auto px-8 py-6 gap-10 flex flex-col"></div>
+        </main>
       </div>
     </div>
   );
