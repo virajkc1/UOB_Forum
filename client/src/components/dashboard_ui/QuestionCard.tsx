@@ -3,9 +3,9 @@
 type QuestionCardProps = {
   title: string;
   content: string;
-  author: { name: string; avatarUrl?: string };
+  author: { name?: string } | null;
   createdAt: string;
-  module?: string;
+  tags?: string[];
   attachments?: string[];
 };
 
@@ -16,7 +16,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   content,
   author,
   createdAt,
-  module,
+  tags,
   attachments = [], //default empty array if no attachments
 }) => {
   return (
@@ -26,7 +26,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
             <div>
-              <h3 className="font-medium text-gray-900">{author.name}</h3>
+              <h3 className="font-medium text-gray-900">
+                {author?.name || "Unknown"}
+              </h3>
               <p className="text-sm text-gray-500">{createdAt}</p>
             </div>
           </div>
@@ -67,9 +69,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         </div>
       </main>
       <footer>
-        {module && (
+        {tags && tags.length > 0 && (
           <span className="text-sm text-gray-500">
-            Module: <span className="font-medium text-gray-900">{module}</span>
+            <span className="font-medium text-gray-900">{tags.join(", ")}</span>
           </span>
         )}
       </footer>

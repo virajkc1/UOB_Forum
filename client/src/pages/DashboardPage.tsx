@@ -46,6 +46,38 @@ const DashboardPage = () => {
   Pros - App is fast, no full reload wont lose app state eg: form / data / scroll position
   */
 
+  //Temp Data until Async is implemented
+  const mockQuestions = [
+    {
+      _id: "1",
+      title: "Why did my answer give 3,121 for PDA?",
+      content: "I think I messed up the integral when...",
+      author: { name: "Viraj Chapaneri" },
+      createdAt: "5 months ago",
+      module: "Year 3",
+      attachments: [],
+    },
+    // add more mocks here
+    {
+      _id: "1",
+      title: "Why did my answer give 3,121 for PDA?",
+      content: "I think I messed up the integral when...",
+      author: { name: "Viraj Chapaneri" },
+      createdAt: "5 months ago",
+      module: "Year 3",
+      attachments: [],
+    },
+    {
+      _id: "1",
+      title: "Why did my answer give 3,121 for PDA?",
+      content: "I think I messed up the integral when...",
+      author: { name: "Viraj Chapaneri" },
+      createdAt: "5 months ago",
+      module: "Year 3",
+      attachments: [],
+    },
+  ];
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -81,12 +113,13 @@ const DashboardPage = () => {
   }, [isAuthenticated]);
 
   const fetchQuestions = async () => {
+    setIsLoadingQuestions(true);
+    setError("");
     try {
-      setIsLoadingQuestions(true);
-      const response = await api.get("/question/user"); // Get only user's questions
-      if (response.status === 200) {
-        setQuestions(response.data);
-      }
+      const { data } = await api.get("/question/all"); // Get the data from the API
+      //Destructure the data from the API
+      setQuestions(data);
+      console.log(data);
     } catch (error: any) {
       setError("Failed to fetch your questions");
       console.error("Error fetching your questions:", error);
@@ -241,7 +274,11 @@ const DashboardPage = () => {
 
           
           */}
-          <div className="justify-between w-full max-w-4xl flex-1 mx-auto px-8 py-6 gap-10 flex flex-col"></div>
+          <div className="justify-between w-full max-w-4xl flex-1 mx-auto px-8 py-6 gap-10 flex flex-col">
+            {questions.map((question) => (
+              <QuestionCard key={question._id} {...question} />
+            ))}
+          </div>
         </main>
       </div>
     </div>

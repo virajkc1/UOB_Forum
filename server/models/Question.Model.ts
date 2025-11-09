@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const questionSchema = new mongoose.Schema(
+  //This is the schema of all fields for a question
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
