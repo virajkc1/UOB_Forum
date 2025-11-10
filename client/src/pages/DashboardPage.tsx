@@ -16,6 +16,7 @@ import { AppSidebar } from "@/components/ui/app-sidebar";
 import * as Dialog from "@radix-ui/react-dialog"; //namespace import -
 import { X } from "lucide-react";
 import QuestionCard from "../components/dashboard_ui/QuestionCard";
+import CreateQuestionDialog from "@/components/dashboard_ui/CreateQuestionDialog";
 interface Question {
   _id: string;
   title: string;
@@ -259,12 +260,7 @@ const DashboardPage = () => {
           </div>
           <div className="flex justify-between items-center mb-6">
             <Button variant="outline">Filter/Sort by</Button>
-            <Button
-              variant="outline"
-              className="bg-blue-500 rounded-xl text-white font-bold hover:shadow-md hover:bg-blue-100"
-            >
-              Create a Post
-            </Button>
+            <CreateQuestionDialog />
           </div>
           {/* This creates the Question Card 
           
