@@ -142,7 +142,8 @@ const LoginPage = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     onChange={handleChange}
-                    value={formData.password}
+                    // value={formData.password}
+                    // Test Password
                     className="appearance-none block w-full px-3 py-2 pr-10 border-b border-gray-300 placeholder-gray-400 focus:outline-none focus:border-blue-500 rounded-md"
                   />
                   {errors.password && (

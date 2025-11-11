@@ -101,3 +101,12 @@
 .tile-background {
   @apply bg-[#FE592E];
 }
+
+/* html tag is required here to provide higher specificity */
+html {
+  scrollbar-gutter: stable right-edge;
+  background-color: #fff;
+}
+body {
+  background-color: #fff;
+}

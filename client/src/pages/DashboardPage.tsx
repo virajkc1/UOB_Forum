@@ -1,9 +1,8 @@
 import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import QuestionForm from "../components/QuestionForm";
-import QuestionList from "../components/QuestionList";
+
 import api from "../lib/api";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -11,12 +10,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/ui/app-sidebar";
-import * as Dialog from "@radix-ui/react-dialog"; //namespace import -
-import { X } from "lucide-react";
+
 import QuestionCard from "../components/dashboard_ui/QuestionCard";
 import CreateQuestionDialog from "@/components/dashboard_ui/CreateQuestionDialog";
+
 interface Question {
   _id: string;
   title: string;
@@ -47,38 +44,10 @@ const DashboardPage = () => {
   Pros - App is fast, no full reload wont lose app state eg: form / data / scroll position
   */
 
-  //Temp Data until Async is implemented
-  const mockQuestions = [
-    {
-      _id: "1",
-      title: "Why did my answer give 3,121 for PDA?",
-      content: "I think I messed up the integral when...",
-      author: { name: "Viraj Chapaneri" },
-      createdAt: "5 months ago",
-      module: "Year 3",
-      attachments: [],
-    },
-    // add more mocks here
-    {
-      _id: "1",
-      title: "Why did my answer give 3,121 for PDA?",
-      content: "I think I messed up the integral when...",
-      author: { name: "Viraj Chapaneri" },
-      createdAt: "5 months ago",
-      module: "Year 3",
-      attachments: [],
-    },
-    {
-      _id: "1",
-      title: "Why did my answer give 3,121 for PDA?",
-      content: "I think I messed up the integral when...",
-      author: { name: "Viraj Chapaneri" },
-      createdAt: "5 months ago",
-      module: "Year 3",
-      attachments: [],
-    },
-  ];
-
+  //Handling the questions created by the user
+  const handleQuestionCreated = (newQ: Question) => {
+    setQuestions((prevQuestions) => [newQ, ...prevQuestions]);
+  };
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -127,10 +96,6 @@ const DashboardPage = () => {
     } finally {
       setIsLoadingQuestions(false);
     }
-  };
-
-  const handleQuestionCreated = (newQuestion: Question) => {
-    setQuestions((prevQuestions) => [newQuestion, ...prevQuestions]);
   };
 
   const handleLogout = async () => {
@@ -260,7 +225,7 @@ const DashboardPage = () => {
           </div>
           <div className="flex justify-between items-center mb-6">
             <Button variant="outline">Filter/Sort by</Button>
-            <CreateQuestionDialog />
+            <CreateQuestionDialog onCreated={handleQuestionCreated} />
           </div>
           {/* This creates the Question Card 
           
