@@ -26,13 +26,18 @@ export const createQuestion = async (req: AuthRequest, res: Response) => {
       tags: tags || [],
       author: userId,
     });
-    //upload the question to the collection
+    // upload the question to the collection
+    const populatedQuestion = await newQuestion.populate(
+      "author",
+      "name email"
+    );
     await newQuestion.save();
-
-    return res.status(201).json({ message: "Successful Question Creation" });
+    return res.status(201).json(populatedQuestion);
   } catch (error) {
     res.status(400).json(error);
   }
+
+  //to ensure the author name is populated before responding back
 };
 
 export const getQuestion = async (req: AuthRequest, res: Response) => {
