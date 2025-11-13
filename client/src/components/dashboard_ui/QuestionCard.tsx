@@ -36,6 +36,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             Year 3
           </div>
         </div>
+        {tags && tags.length > 0 && (
+          <span className="text-sm text-gray-500">
+            <span className="font-medium text-gray-900">{tags.join(", ")}</span>
+          </span>
+        )}
       </header>
       <main>
         <div className="bg-blue-500 rounded-xl min-w-full shadow-sm border p-6">
@@ -68,12 +73,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           </div>
         </div>
       </main>
-      <footer>
-        {tags && tags.length > 0 && (
-          <span className="text-sm text-gray-500">
-            <span className="font-medium text-gray-900">{tags.join(", ")}</span>
-          </span>
-        )}
+      <footer className="mt-4">
+        <div className="flex justify-end">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+            See All Replies
+          </button>
+        </div>
       </footer>
     </article>
   );
